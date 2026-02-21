@@ -68,6 +68,7 @@ async function retryFailedOrders() {
       await Promise.all([
         sendCustomerEmail({
           to: order.customer_email,
+          cc: order.backup_email || undefined,
           trackingNumber,
           recipientName: order.recipient_name,
           recipientAddress: order.recipient_address,

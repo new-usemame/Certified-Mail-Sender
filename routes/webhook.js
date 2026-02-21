@@ -9,10 +9,10 @@ const router = express.Router();
 
 const insertOrder = db.prepare(`
   INSERT INTO orders (
-    stripe_session_id, customer_email, sender_name, sender_address,
+    stripe_session_id, customer_email, backup_email, sender_name, sender_address,
     recipient_name, recipient_address, letter_type, return_receipt,
     tracking_number, status, amount_cents, order_token, delivery_status, pdf_id
-  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 `);
 
 const updateOrderSuccess = db.prepare(`
@@ -68,7 +68,7 @@ router.post('/', express.raw({ type: 'application/json' }), async (req, res) => 
     const orderToken = crypto.randomUUID();
     try {
       insertOrder.run(
-        session.id, m.customer_email, m.sender_name,
+        session.id, m.customer_email, m.backup_email || null, m.sender_name,
         `${m.sender_street}, ${m.sender_city}, ${m.sender_state} ${m.sender_zip}`,
         m.recipient_name,
         `${m.recipient_street}, ${m.recipient_city}, ${m.recipient_state} ${m.recipient_zip}`,
@@ -82,7 +82,7 @@ router.post('/', express.raw({ type: 'application/json' }), async (req, res) => 
       orderId: 'N/A',
       error: `Amount underpayment: expected ${expectedCents}, got ${actualCents}. Session ${session.id}. Order needs manual review.`,
     }).catch(console.error);
-    await sendCustomerFailureEmail({ to: m.customer_email, orderToken }).catch(console.error);
+    await sendCustomerFailureEmail({ to: m.customer_email, cc: m.backup_email || undefined, orderToken }).catch(console.error);
     return res.json({ received: true });
   }
 
@@ -96,7 +96,7 @@ router.post('/', express.raw({ type: 'application/json' }), async (req, res) => 
   let orderId;
   try {
     const result = insertOrder.run(
-      session.id, m.customer_email, m.sender_name, senderAddress,
+      session.id, m.customer_email, m.backup_email || null, m.sender_name, senderAddress,
       m.recipient_name, recipientAddress, m.letter_type, returnReceipt ? 1 : 0,
       null, 'pending', amountCents, orderToken, 'processing', m.pdf_id,
     );
@@ -116,7 +116,7 @@ router.post('/', express.raw({ type: 'application/json' }), async (req, res) => 
     updateOrderFailed.run('failed', 'failed', 'PDF data not found during processing', session.id);
     await Promise.all([
       sendFailureAlert({ orderId, error: `PDF not found in database: ${m.pdf_id}` }),
-      sendCustomerFailureEmail({ to: m.customer_email, orderToken }),
+      sendCustomerFailureEmail({ to: m.customer_email, cc: m.backup_email || undefined, orderToken }),
     ]).catch(console.error);
     return res.json({ received: true });
   }
@@ -153,7 +153,7 @@ router.post('/', express.raw({ type: 'application/json' }), async (req, res) => 
     updateOrderFailed.run('failed', 'failed', scmErr.message, session.id);
     await Promise.all([
       sendFailureAlert({ orderId, error: scmErr.message }),
-      sendCustomerFailureEmail({ to: m.customer_email, orderToken }),
+      sendCustomerFailureEmail({ to: m.customer_email, cc: m.backup_email || undefined, orderToken }),
     ]).catch(console.error);
     return res.json({ received: true });
   }
@@ -162,6 +162,7 @@ router.post('/', express.raw({ type: 'application/json' }), async (req, res) => 
     await Promise.all([
       sendCustomerEmail({
         to: m.customer_email,
+        cc: m.backup_email || undefined,
         trackingNumber,
         recipientName: m.recipient_name,
         recipientAddress,

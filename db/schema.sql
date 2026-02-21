@@ -23,5 +23,6 @@ CREATE TABLE IF NOT EXISTS orders (
   accepted_date DATETIME,
   delivery_date DATETIME,
   signature_name TEXT,
+  backup_email TEXT,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );

@@ -19,4 +19,7 @@ migrate002.run(db);
 const migrate003 = require('./migrate-003-pdf-storage');
 migrate003.run(db);
 
+const migrate004 = require('./migrate-004-backup-email');
+migrate004.run(db);
+
 module.exports = db;

@@ -109,7 +109,7 @@ function buildCustomerHtml({ trackingNumber, recipientName, recipientAddress, re
 </body></html>`;
 }
 
-async function sendCustomerEmail({ to, trackingNumber, recipientName, recipientAddress, returnReceipt, orderToken }) {
+async function sendCustomerEmail({ to, cc, trackingNumber, recipientName, recipientAddress, returnReceipt, orderToken }) {
   const trackingPageUrl = `${process.env.BASE_URL}/order/${orderToken}`;
 
   const html = buildCustomerHtml({ trackingNumber, recipientName, recipientAddress, returnReceipt, orderToken });
@@ -121,6 +121,7 @@ async function sendCustomerEmail({ to, trackingNumber, recipientName, recipientA
   await getResend().emails.send({
     from: FROM_ADDRESS,
     to,
+    ...(cc ? { cc } : {}),
     subject: `Your Certified Mail is on its way — Tracking #${trackingNumber || 'pending'}`,
     html,
     text: [
@@ -186,12 +187,13 @@ async function sendFailureAlert({ orderId, error }) {
   });
 }
 
-async function sendCustomerFailureEmail({ to, orderToken }) {
+async function sendCustomerFailureEmail({ to, cc, orderToken }) {
   const trackingPageUrl = `${process.env.BASE_URL}/order/${orderToken}`;
 
   await getResend().emails.send({
     from: FROM_ADDRESS,
     to,
+    ...(cc ? { cc } : {}),
     subject: 'Update on your certified mail order',
     text: [
       'We encountered an issue processing your certified letter.',

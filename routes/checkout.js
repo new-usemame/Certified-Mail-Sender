@@ -31,12 +31,18 @@ function validate(body) {
   if (!/^[A-Z]{2}$/i.test(body.sender_state)) return 'Sender state must be a 2-letter code.';
   if (!/^[A-Z]{2}$/i.test(body.recipient_state)) return 'Recipient state must be a 2-letter code.';
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(body.customer_email)) return 'Please enter a valid email address.';
+  if (body.backup_email && body.backup_email.trim()) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(body.backup_email)) return 'Please enter a valid backup email address.';
+    if (body.backup_email.trim().toLowerCase() === body.customer_email.trim().toLowerCase()) {
+      return 'Backup email must be different from your primary email.';
+    }
+  }
   if (!/^\d{5}(-?\d{4})?$/.test(body.sender_zip)) return 'Invalid sender ZIP code.';
   if (!/^\d{5}(-?\d{4})?$/.test(body.recipient_zip)) return 'Invalid recipient ZIP code.';
   if (body.letter_mode === 'text' && body.letter_text && body.letter_text.length > 50000) {
     return 'Letter text is too long. Please keep it under 50,000 characters.';
   }
-  const maxLens = { sender_name: 200, sender_street: 200, sender_street2: 200, sender_city: 100, recipient_name: 200, recipient_street: 200, recipient_street2: 200, recipient_city: 100, customer_email: 254 };
+  const maxLens = { sender_name: 200, sender_street: 200, sender_street2: 200, sender_city: 100, recipient_name: 200, recipient_street: 200, recipient_street2: 200, recipient_city: 100, customer_email: 254, backup_email: 254 };
   for (const [field, max] of Object.entries(maxLens)) {
     if (body[field] && body[field].length > max) {
       return `${field.replace(/_/g, ' ')} is too long (max ${max} characters).`;
@@ -59,7 +65,7 @@ router.post('/', upload.single('letter_pdf'), csrfAfterMulter, async (req, res, 
   try {
     const trimFields = [
       'sender_name', 'sender_street', 'sender_street2', 'sender_city', 'sender_state', 'sender_zip',
-      'customer_email',
+      'customer_email', 'backup_email',
       'recipient_name', 'recipient_street', 'recipient_street2', 'recipient_city', 'recipient_state', 'recipient_zip',
     ];
     for (const field of trimFields) {
@@ -106,6 +112,7 @@ router.post('/', upload.single('letter_pdf'), csrfAfterMulter, async (req, res, 
       sender_state: req.body.sender_state.toUpperCase(),
       sender_zip: req.body.sender_zip,
       customer_email: req.body.customer_email,
+      backup_email: req.body.backup_email || '',
       recipient_name: req.body.recipient_name,
       recipient_street: req.body.recipient_street,
       recipient_street2: req.body.recipient_street2 || '',
