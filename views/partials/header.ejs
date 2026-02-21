@@ -3,7 +3,53 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title><%= typeof title !== 'undefined' ? title : 'Certified Mail Sender' %></title>
+  <title><%= typeof title !== 'undefined' ? title : 'Send USPS Certified Mail Online | Certified Mail Sender' %></title>
+  <meta name="description" content="<%= typeof description !== 'undefined' ? description : 'Send USPS Certified Mail online. We print, certify, and mail your letter. Track delivery with optional return receipt.' %>">
+  <link rel="canonical" href="<%= typeof canonical !== 'undefined' ? canonical : (typeof baseUrl !== 'undefined' ? baseUrl : 'https://certifiedmailsender.com') + '/' %>">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="<%= typeof title !== 'undefined' ? title : 'Send USPS Certified Mail Online | Certified Mail Sender' %>">
+  <meta property="og:description" content="Send USPS Certified Mail online. We print, certify, and mail your letter through USPS.">
+  <meta property="og:url" content="<%= typeof canonical !== 'undefined' ? canonical : (typeof baseUrl !== 'undefined' ? baseUrl : 'https://certifiedmailsender.com') + '/' %>">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="<%= typeof title !== 'undefined' ? title : 'Send USPS Certified Mail Online' %>">
+  <meta name="twitter:description" content="Send USPS Certified Mail online. We print, certify, and mail your letter through USPS.">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "Certified Mail Sender",
+    "description": "Send USPS Certified Mail online. We print, certify, and mail your letter with tracking and optional return receipt.",
+    "serviceType": "USPS Certified Mail",
+    "provider": {
+      "@type": "Organization",
+      "name": "Certified Mail Sender"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "10.00",
+      "priceCurrency": "USD",
+      "description": "USPS Certified Mail with tracking"
+    }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<header class="site-header">
+  <div class="postmark">USPS<br>Certified</div>
+  <h1 class="site-name">Certified Mail Sender</h1>
+  <p class="site-tagline">Official USPS Certified Mail, Sent Online</p>
+</header>

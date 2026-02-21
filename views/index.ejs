@@ -1,6 +1,8 @@
-<%- include('partials/header', { title: 'Send Certified Mail' }) %>
+<%- include('partials/header', { title: 'Send USPS Certified Mail Online | Certified Mail Sender' }) %>
 
-<h1>Send Certified Mail</h1>
+<main id="main">
+
+<h2>Send Certified Mail</h2>
 <p class="subtitle">Fill out the form below. We print, certify, and mail it through USPS.</p>
 
 <% if (typeof error !== 'undefined' && error) { %>
@@ -9,92 +11,97 @@
 
 <form action="/checkout" method="POST" enctype="multipart/form-data">
 
-  <hr>
-  <h3>Your Information (Sender)</h3>
+  <section class="form-section">
+    <span class="section-label">Sender</span>
 
-  <label for="sender_name">Full Name</label>
-  <input type="text" id="sender_name" name="sender_name" required>
+    <label for="sender_name">Full Name</label>
+    <input type="text" id="sender_name" name="sender_name" required>
 
-  <label for="sender_street">Street Address</label>
-  <input type="text" id="sender_street" name="sender_street" required>
+    <label for="sender_street">Street Address</label>
+    <input type="text" id="sender_street" name="sender_street" required>
 
-  <div class="row">
-    <div>
-      <label for="sender_city">City</label>
-      <input type="text" id="sender_city" name="sender_city" required>
+    <div class="row">
+      <div>
+        <label for="sender_city">City</label>
+        <input type="text" id="sender_city" name="sender_city" required>
+      </div>
+      <div>
+        <label for="sender_state">State</label>
+        <input type="text" id="sender_state" name="sender_state" maxlength="2" required>
+      </div>
+      <div>
+        <label for="sender_zip">ZIP</label>
+        <input type="text" id="sender_zip" name="sender_zip" maxlength="10" required>
+      </div>
     </div>
-    <div>
-      <label for="sender_state">State</label>
-      <input type="text" id="sender_state" name="sender_state" maxlength="2" required>
+
+    <label for="customer_email">Your Email (for tracking info)</label>
+    <input type="email" id="customer_email" name="customer_email" required>
+  </section>
+
+  <section class="form-section">
+    <span class="section-label">Recipient</span>
+
+    <label for="recipient_name">Full Name</label>
+    <input type="text" id="recipient_name" name="recipient_name" required>
+
+    <label for="recipient_street">Street Address</label>
+    <input type="text" id="recipient_street" name="recipient_street" required>
+
+    <div class="row">
+      <div>
+        <label for="recipient_city">City</label>
+        <input type="text" id="recipient_city" name="recipient_city" required>
+      </div>
+      <div>
+        <label for="recipient_state">State</label>
+        <input type="text" id="recipient_state" name="recipient_state" maxlength="2" required>
+      </div>
+      <div>
+        <label for="recipient_zip">ZIP</label>
+        <input type="text" id="recipient_zip" name="recipient_zip" maxlength="10" required>
+      </div>
     </div>
-    <div>
-      <label for="sender_zip">ZIP</label>
-      <input type="text" id="sender_zip" name="sender_zip" maxlength="10" required>
+  </section>
+
+  <section class="form-section">
+    <span class="section-label">Letter Content</span>
+
+    <div class="radio-group">
+      <div>
+        <input type="radio" id="mode_text" name="letter_mode" value="text" checked onchange="toggleMode()">
+        <label for="mode_text">Type / paste text</label>
+      </div>
+      <div>
+        <input type="radio" id="mode_pdf" name="letter_mode" value="pdf" onchange="toggleMode()">
+        <label for="mode_pdf">Upload PDF</label>
+      </div>
     </div>
-  </div>
 
-  <label for="customer_email">Your Email (for tracking info)</label>
-  <input type="email" id="customer_email" name="customer_email" required>
-
-  <hr>
-  <h3>Recipient</h3>
-
-  <label for="recipient_name">Full Name</label>
-  <input type="text" id="recipient_name" name="recipient_name" required>
-
-  <label for="recipient_street">Street Address</label>
-  <input type="text" id="recipient_street" name="recipient_street" required>
-
-  <div class="row">
-    <div>
-      <label for="recipient_city">City</label>
-      <input type="text" id="recipient_city" name="recipient_city" required>
+    <div id="text_input">
+      <label for="letter_text">Letter Text</label>
+      <textarea id="letter_text" name="letter_text" placeholder="Type or paste your letter here..."></textarea>
     </div>
-    <div>
-      <label for="recipient_state">State</label>
-      <input type="text" id="recipient_state" name="recipient_state" maxlength="2" required>
+
+    <div id="pdf_input" style="display:none">
+      <label for="letter_pdf">Upload PDF</label>
+      <input type="file" id="letter_pdf" name="letter_pdf" accept="application/pdf">
     </div>
-    <div>
-      <label for="recipient_zip">ZIP</label>
-      <input type="text" id="recipient_zip" name="recipient_zip" maxlength="10" required>
+  </section>
+
+  <section class="form-section">
+    <span class="section-label">Options</span>
+
+    <div class="checkbox-row">
+      <input type="checkbox" id="return_receipt" name="return_receipt" value="1" onchange="updatePrice()">
+      <label for="return_receipt">Add Electronic Return Receipt (+$3.00)</label>
     </div>
-  </div>
 
-  <hr>
-  <h3>Letter Content</h3>
+    <div class="price-box" id="price_display" aria-live="polite">Total: $10.00</div>
+  </section>
 
-  <div class="radio-group">
-    <div>
-      <input type="radio" id="mode_text" name="letter_mode" value="text" checked onchange="toggleMode()">
-      <label for="mode_text">Type / paste text</label>
-    </div>
-    <div>
-      <input type="radio" id="mode_pdf" name="letter_mode" value="pdf" onchange="toggleMode()">
-      <label for="mode_pdf">Upload PDF</label>
-    </div>
-  </div>
-
-  <div id="text_input">
-    <label for="letter_text">Letter Text</label>
-    <textarea id="letter_text" name="letter_text" placeholder="Type or paste your letter here..."></textarea>
-  </div>
-
-  <div id="pdf_input" style="display:none">
-    <label for="letter_pdf">Upload PDF</label>
-    <input type="file" id="letter_pdf" name="letter_pdf" accept="application/pdf">
-  </div>
-
-  <hr>
-  <h3>Options</h3>
-
-  <div class="checkbox-row">
-    <input type="checkbox" id="return_receipt" name="return_receipt" value="1" onchange="updatePrice()">
-    <label for="return_receipt">Add Electronic Return Receipt (+$3.00)</label>
-  </div>
-
-  <div class="price-box" id="price_display">Total: $10.00</div>
-
-  <button type="submit">Pay &amp; Send</button>
+  <p class="trust-line">&#x1F512; Secure checkout via Stripe</p>
+  <button type="submit">Pay &amp; Send Certified Mail</button>
 
 </form>
 
