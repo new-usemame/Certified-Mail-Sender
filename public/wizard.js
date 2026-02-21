@@ -25,27 +25,35 @@
   });
 
   // --- Progressive reveal ---
-  function setupReveal(streetId, revealId) {
+  function setupReveal(streetId, revealId, cityId) {
     var street = document.getElementById(streetId);
     var group = document.getElementById(revealId);
+    var city = document.getElementById(cityId);
     if (!street || !group) return;
 
-    function check() {
-      if (document.activeElement === street || street.value.trim()) {
-        group.classList.add('revealed');
-      }
-    }
-
-    street.addEventListener('focus', check);
-    street.addEventListener('input', check);
-
-    if (street.value.trim()) {
+    function reveal() {
       group.classList.add('revealed');
     }
+
+    street.addEventListener('blur', function () {
+      if (street.value.trim()) reveal();
+    });
+
+    street.addEventListener('change', function () {
+      if (street.value.trim()) reveal();
+    });
+
+    if (city) {
+      city.addEventListener('input', function () {
+        if (city.value.trim()) reveal();
+      });
+    }
+
+    if (street.value.trim()) reveal();
   }
 
-  setupReveal('w_recipient_street', 'recipientReveal');
-  setupReveal('w_sender_street', 'senderReveal');
+  setupReveal('w_recipient_street', 'recipientReveal', 'w_recipient_city');
+  setupReveal('w_sender_street', 'senderReveal', 'w_sender_city');
 
   // --- Content tabs ---
   var tabText = document.getElementById('tabText');
