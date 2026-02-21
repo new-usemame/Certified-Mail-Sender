@@ -71,7 +71,15 @@
 <details class="faq-item">
   <summary>Is my payment information secure?</summary>
   <div class="faq-answer">
-    <p>Yes. All payments are processed through Stripe, a PCI-compliant payment processor used by millions of businesses. We never see or store your credit card information.</p>
+    <p>Yes. All payments are processed through <strong>Stripe</strong>, a PCI-DSS Level 1 certified payment processor &mdash; the highest level of security certification in the payments industry. Stripe processes payments for companies like Amazon, Google, and Shopify.</p>
+    <p>We <strong>never see, store, or have access to your credit card number</strong>. Card information goes directly from your browser to Stripe's servers over an encrypted connection. All connections to our site are protected by 256-bit SSL encryption. Learn more on our <a href="/security">Security</a> page.</p>
+  </div>
+</details>
+
+<details class="faq-item">
+  <summary>How do you protect my personal information?</summary>
+  <div class="faq-answer">
+    <p>We take data protection seriously. All data is transmitted over 256-bit SSL encrypted connections. We store only the minimum information needed to process your order (addresses, letter content, email). We do not sell or share your data with third parties, and we do not require you to create an account &mdash; reducing the amount of personal data we hold. Read our full <a href="/security">Security</a> practices for details.</p>
   </div>
 </details>
 
@@ -159,7 +167,15 @@
       "name": "Is my payment information secure?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. All payments are processed through Stripe, a PCI-compliant payment processor used by millions of businesses. We never see or store your credit card information."
+        "text": "Yes. All payments are processed through Stripe, a PCI-DSS Level 1 certified payment processor. We never see, store, or have access to your credit card number. All connections are protected by 256-bit SSL encryption."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do you protect my personal information?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "All data is transmitted over 256-bit SSL encrypted connections. We store only the minimum information needed to process your order. We do not sell or share your data with third parties, and we do not require you to create an account."
       }
     }
   ]

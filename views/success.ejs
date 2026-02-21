@@ -5,14 +5,14 @@
 <% if (typeof pending !== 'undefined' && pending) { %>
   <meta http-equiv="refresh" content="3">
   <div class="order-status-banner processing">
-    <div class="status-icon spinning">&#9993;</div>
+    <div class="status-icon spinning"><svg class="icon" style="width:2.5rem;height:2.5rem" aria-hidden="true"><use href="#icon-mail"/></svg></div>
     <h2>Processing Your Order&hellip;</h2>
     <p>Your payment was received. We're setting up your certified letter now. This page will update automatically.</p>
   </div>
 
 <% } else if (!order) { %>
   <div class="order-status-banner success">
-    <div class="status-icon">&#10003;</div>
+    <div class="status-icon"><svg class="icon" style="width:2.5rem;height:2.5rem" aria-hidden="true"><use href="#icon-check-circle"/></svg></div>
     <h2>Payment Received</h2>
     <p>Your certified letter is being processed. You will receive an email with your tracking number and delivery details shortly.</p>
     <p style="margin-top:1rem"><a href="/">Send another letter</a></p>
@@ -20,9 +20,14 @@
 
 <% } else { %>
   <div class="order-status-banner success">
-    <div class="status-icon">&#10003;</div>
+    <div class="status-icon"><svg class="icon" style="width:2.5rem;height:2.5rem" aria-hidden="true"><use href="#icon-check-circle"/></svg></div>
     <h2>Order Confirmed</h2>
     <p>Your certified letter has been submitted and is being processed by USPS.</p>
+  </div>
+
+  <div class="verified-transaction">
+    <svg class="icon" aria-hidden="true"><use href="#icon-shield"/></svg>
+    Verified Secure Transaction
   </div>
 
   <div class="order-details-grid">
@@ -49,6 +54,20 @@
   </div>
   <% } %>
 
+  <% if (order.tracking_number) { %>
+  <div class="usps-tracking-card">
+    <div class="tracking-header">
+      <svg class="icon" aria-hidden="true"><use href="#icon-eagle"/></svg>
+      USPS Tracking
+    </div>
+    <div class="tracking-number"><%= order.tracking_number %></div>
+    <a href="https://tools.usps.com/go/TrackConfirmAction?tLabels=<%= order.tracking_number %>" target="_blank" rel="noopener" class="track-button">
+      <svg class="icon" aria-hidden="true"><use href="#icon-eagle"/></svg>
+      Track on USPS.com
+    </a>
+  </div>
+  <% } %>
+
   <div class="order-info-section">
     <div class="info-row">
       <span class="info-label">Tracking Number</span>
@@ -62,7 +81,12 @@
     </div>
     <div class="info-row">
       <span class="info-label">Service</span>
-      <span class="info-value">USPS Certified Mail<%= order.return_receipt ? ' + Return Receipt' : '' %></span>
+      <span class="info-value">
+        <span class="usps-badge" style="font-size:.6rem;padding:.2rem .5rem">
+          <svg class="icon" aria-hidden="true"><use href="#icon-eagle"/></svg>
+          USPS Certified Mail<%= order.return_receipt ? ' + Return Receipt' : '' %>
+        </span>
+      </span>
     </div>
     <div class="info-row">
       <span class="info-label">Amount Paid</span>

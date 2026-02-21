@@ -67,6 +67,7 @@ app.use('/pricing', require('./routes/pricing'));
 app.use('/faq', require('./routes/faq'));
 app.use('/about', require('./routes/about'));
 app.use('/contact', require('./routes/contact'));
+app.use('/security', require('./routes/security'));
 
 if (process.env.ENABLE_STATUS_PAGE === 'true') {
   app.use('/status', require('./routes/status'));
@@ -82,7 +83,7 @@ app.use((err, _req, res, _next) => {
 
 // Periodic cleanup of orphaned PDF files from abandoned checkouts
 const UPLOAD_DIR = path.join(__dirname, 'uploads');
-const ORPHAN_MAX_AGE_MS = 2 * 60 * 60 * 1000;
+const ORPHAN_MAX_AGE_MS = 4 * 60 * 60 * 1000;
 
 function cleanOrphanedUploads() {
   fs.readdir(UPLOAD_DIR, (err, files) => {
@@ -100,13 +101,26 @@ function cleanOrphanedUploads() {
   });
 }
 
-setInterval(cleanOrphanedUploads, 30 * 60 * 1000);
+const cleanupInterval = setInterval(cleanOrphanedUploads, 30 * 60 * 1000);
 cleanOrphanedUploads();
 
+let server;
 if (require.main === module) {
-  app.listen(PORT, () => {
+  server = app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
   });
+
+  function shutdown() {
+    console.log('Shutting down gracefully...');
+    clearInterval(cleanupInterval);
+    server.close(() => {
+      db.close();
+      process.exit(0);
+    });
+    setTimeout(() => process.exit(1), 10000);
+  }
+  process.on('SIGTERM', shutdown);
+  process.on('SIGINT', shutdown);
 }
 
 module.exports = app;

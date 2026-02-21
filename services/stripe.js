@@ -23,6 +23,8 @@ async function createCheckoutSession({ metadata, returnReceipt }) {
   return getStripe().checkout.sessions.create({
     payment_method_types: ['card'],
     mode: 'payment',
+    customer_email: metadata.customer_email,
+    expires_at: Math.floor(Date.now() / 1000) + 3600,
     line_items: [
       {
         price_data: {

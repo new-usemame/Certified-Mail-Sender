@@ -33,6 +33,10 @@ const getOrderToken = db.prepare(`
   SELECT order_token FROM orders WHERE stripe_session_id = ?
 `);
 
+const findExistingOrder = db.prepare(`
+  SELECT id FROM orders WHERE stripe_session_id = ?
+`);
+
 router.post('/', express.raw({ type: 'application/json' }), async (req, res) => {
   let event;
   try {
@@ -47,9 +51,22 @@ router.post('/', express.raw({ type: 'application/json' }), async (req, res) => 
   }
 
   const session = event.data.object;
+
+  // Idempotency: if this session was already processed, acknowledge and skip
+  const existingOrder = findExistingOrder.get(session.id);
+  if (existingOrder) {
+    return res.json({ received: true });
+  }
+
   const m = session.metadata;
   const returnReceipt = m.return_receipt === '1';
-  const amountCents = getPriceCents(returnReceipt);
+
+  const expectedCents = getPriceCents(returnReceipt);
+  const actualCents = session.amount_total;
+  if (actualCents != null && actualCents !== expectedCents) {
+    console.error(`Amount mismatch: expected ${expectedCents}, Stripe charged ${actualCents}, session ${session.id}`);
+  }
+  const amountCents = actualCents || expectedCents;
 
   const senderAddress = `${m.sender_street}, ${m.sender_city}, ${m.sender_state} ${m.sender_zip}`;
   const recipientAddress = `${m.recipient_street}, ${m.recipient_city}, ${m.recipient_state} ${m.recipient_zip}`;

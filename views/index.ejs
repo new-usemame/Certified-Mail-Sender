@@ -4,6 +4,24 @@
 
 <h2>Send Certified Mail</h2>
 <p class="subtitle">No account needed. Just fill out the form, pay, and we print, certify, and mail it through USPS.</p>
+
+<div class="trust-strip">
+  <span class="trust-strip-item">
+    <svg class="icon" aria-hidden="true"><use href="#icon-lock"/></svg>
+    Encrypted &amp; Secure
+  </span>
+  <span class="trust-strip-sep" aria-hidden="true">&middot;</span>
+  <span class="trust-strip-item">
+    <svg class="icon" aria-hidden="true"><use href="#icon-shield"/></svg>
+    Your data is protected
+  </span>
+  <span class="trust-strip-sep" aria-hidden="true">&middot;</span>
+  <span class="trust-strip-item">
+    <svg class="icon" aria-hidden="true"><use href="#icon-envelope-check"/></svg>
+    Official USPS Certified Mail
+  </span>
+</div>
+
 <div class="no-signup-stamp">No Signup Required</div>
 
 <% if (typeof error !== 'undefined' && error) { %>
@@ -15,6 +33,7 @@
 
   <fieldset class="form-section">
     <legend class="section-label">Sender</legend>
+    <span class="encrypted-label"><svg class="icon" aria-hidden="true"><use href="#icon-lock"/></svg> Encrypted</span>
 
     <label for="sender_name">Full Name</label>
     <input type="text" id="sender_name" name="sender_name" autocomplete="name" required>
@@ -43,6 +62,7 @@
 
   <fieldset class="form-section">
     <legend class="section-label">Recipient</legend>
+    <span class="encrypted-label"><svg class="icon" aria-hidden="true"><use href="#icon-lock"/></svg> Encrypted</span>
 
     <label for="recipient_name">Full Name</label>
     <input type="text" id="recipient_name" name="recipient_name" required>
@@ -68,6 +88,7 @@
 
   <fieldset class="form-section">
     <legend class="section-label">Letter Content</legend>
+    <span class="encrypted-label"><svg class="icon" aria-hidden="true"><use href="#icon-lock"/></svg> Encrypted</span>
 
     <div class="radio-group">
       <div>
@@ -102,7 +123,30 @@
     <div class="price-box" id="price_display" aria-live="polite">Total: $10.00</div>
   </fieldset>
 
-  <p class="trust-line">&#x1F512; No account needed &middot; Secure checkout via Stripe</p>
+  <div class="active-security-msg">
+    <svg class="icon" aria-hidden="true"><use href="#icon-shield"/></svg>
+    Your connection is encrypted. Your data is protected.
+  </div>
+
+  <div class="secure-checkout-box">
+    <h3>
+      <svg class="icon" aria-hidden="true"><use href="#icon-shield"/></svg>
+      Secure Checkout
+    </h3>
+    <p>Your payment is processed by Stripe. We never store or see your credit card information.</p>
+    <span class="stripe-badge">
+      <svg class="icon" aria-hidden="true"><use href="#icon-stripe"/></svg>
+      Powered by Stripe
+    </span>
+  </div>
+
+  <div style="margin-top:.5rem">
+    <span class="usps-badge">
+      <svg class="icon" aria-hidden="true"><use href="#icon-eagle"/></svg>
+      Ships via United States Postal Service
+    </span>
+  </div>
+
   <button type="submit">Pay &amp; Send Certified Mail</button>
 
 </form>

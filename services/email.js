@@ -1,6 +1,6 @@
 const { Resend } = require('resend');
 
-const FROM_ADDRESS = 'Certified Mail Sender <onboarding@resend.dev>';
+const FROM_ADDRESS = process.env.FROM_EMAIL || 'Certified Mail Sender <onboarding@resend.dev>';
 
 let _resend;
 function getResend() {

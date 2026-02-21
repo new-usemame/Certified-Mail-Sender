@@ -1,7 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
-const fs = require('fs');
+const fs = require('fs/promises');
 const { createCheckoutSession, getPriceCents } = require('../services/stripe');
 const { generateLetterPdf } = require('../services/pdf');
 
@@ -28,6 +28,7 @@ function validate(body) {
   }
   if (!/^[A-Z]{2}$/i.test(body.sender_state)) return 'Sender state must be a 2-letter code.';
   if (!/^[A-Z]{2}$/i.test(body.recipient_state)) return 'Recipient state must be a 2-letter code.';
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(body.customer_email)) return 'Please enter a valid email address.';
   if (!/^\d{5}(-?\d{4})?$/.test(body.sender_zip)) return 'Invalid sender ZIP code.';
   if (!/^\d{5}(-?\d{4})?$/.test(body.recipient_zip)) return 'Invalid recipient ZIP code.';
   if (body.letter_mode === 'text' && body.letter_text && body.letter_text.length > 50000) {
@@ -48,6 +49,15 @@ function csrfAfterMulter(req, res, next) {
 
 router.post('/', upload.single('letter_pdf'), csrfAfterMulter, async (req, res, next) => {
   try {
+    const trimFields = [
+      'sender_name', 'sender_street', 'sender_city', 'sender_state', 'sender_zip',
+      'customer_email',
+      'recipient_name', 'recipient_street', 'recipient_city', 'recipient_state', 'recipient_zip',
+    ];
+    for (const field of trimFields) {
+      if (typeof req.body[field] === 'string') req.body[field] = req.body[field].trim();
+    }
+
     const err = validate(req.body);
     if (err) return res.render('index', { error: err });
 
@@ -66,9 +76,9 @@ router.post('/', upload.single('letter_pdf'), csrfAfterMulter, async (req, res, 
       if (!req.file) {
         return res.render('index', { error: 'Please upload a PDF file.' });
       }
-      const fileBuffer = fs.readFileSync(req.file.path);
+      const fileBuffer = await fs.readFile(req.file.path);
       pdfBase64 = fileBuffer.toString('base64');
-      fs.unlinkSync(req.file.path);
+      await fs.unlink(req.file.path);
     }
 
     const returnReceipt = req.body.return_receipt === '1';
@@ -77,7 +87,7 @@ router.post('/', upload.single('letter_pdf'), csrfAfterMulter, async (req, res, 
     // For large PDFs, save to disk and reference by filename.
     const pdfId = `pdf_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
     const pdfPath = path.join(__dirname, '..', 'uploads', `${pdfId}.b64`);
-    fs.writeFileSync(pdfPath, pdfBase64);
+    await fs.writeFile(pdfPath, pdfBase64);
 
     const metadata = {
       sender_name: req.body.sender_name,

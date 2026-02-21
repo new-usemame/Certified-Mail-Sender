@@ -1,0 +1,89 @@
+<%- include('partials/header', { title, description, canonical, currentPath }) %>
+
+<main id="main" class="content-page security-page">
+
+<h2>Security</h2>
+<p class="subtitle">How we protect your data, your payment, and your mail.</p>
+
+<div class="verified-transaction" style="margin-bottom:1.5rem">
+  <svg class="icon" aria-hidden="true"><use href="#icon-shield"/></svg>
+  Verified Secure Service
+</div>
+
+<div class="security-section">
+  <h3>
+    <svg class="icon" aria-hidden="true"><use href="#icon-lock"/></svg>
+    SSL Encryption
+  </h3>
+  <p>Every connection to Certified Mail Sender is encrypted with 256-bit SSL (TLS 1.2+). Your browser verifies our identity before transmitting any data. All information you enter &mdash; addresses, letter content, and email &mdash; is encrypted in transit between your device and our servers.</p>
+</div>
+
+<div class="security-section">
+  <h3>
+    <svg class="icon" aria-hidden="true"><use href="#icon-stripe"/></svg>
+    Payment Security
+  </h3>
+  <p>All payments are processed by <strong>Stripe</strong>, a PCI-DSS Level 1 certified payment processor &mdash; the highest level of security certification in the payments industry. Stripe handles millions of transactions for companies including Amazon, Google, and Shopify.</p>
+  <p>We <strong>never see, store, or have access to your credit card number</strong>. Card information goes directly from your browser to Stripe's servers. Our systems only receive a confirmation that payment succeeded.</p>
+  <span class="stripe-badge" style="display:inline-flex;align-items:center;gap:.3rem;font-family:var(--font-retro);font-size:.65rem;font-weight:700;color:#635bff;text-transform:uppercase;letter-spacing:.04em;border:1px solid #635bff;padding:.15rem .5rem">
+    <svg class="icon" style="width:.8rem;height:.8rem;color:#635bff" aria-hidden="true"><use href="#icon-stripe"/></svg>
+    Powered by Stripe
+  </span>
+</div>
+
+<div class="security-section">
+  <h3>
+    <svg class="icon" aria-hidden="true"><use href="#icon-data-shield"/></svg>
+    Data Handling
+  </h3>
+  <p>We store only the minimum information needed to process and track your order: sender and recipient addresses, letter content, your email, and payment confirmation. We do not:</p>
+  <ul>
+    <li>Store credit card or financial information</li>
+    <li>Sell or share your personal data with third parties</li>
+    <li>Use your data for marketing without consent</li>
+    <li>Retain letter content after your order is processed and mailed</li>
+  </ul>
+</div>
+
+<div class="security-section">
+  <h3>
+    <svg class="icon" aria-hidden="true"><use href="#icon-eagle"/></svg>
+    USPS Delivery Chain
+  </h3>
+  <p>Once your letter is printed and prepared, it enters the <strong>United States Postal Service Certified Mail</strong> delivery chain. USPS provides:</p>
+  <ul>
+    <li>Official proof of mailing with a unique tracking number</li>
+    <li>Electronic delivery confirmation</li>
+    <li>Signature capture on delivery (with Return Receipt)</li>
+    <li>Secure chain of custody from mailing to delivery</li>
+  </ul>
+  <span class="usps-badge" style="margin-top:.5rem">
+    <svg class="icon" aria-hidden="true"><use href="#icon-eagle"/></svg>
+    Ships via United States Postal Service
+  </span>
+</div>
+
+<div class="security-section">
+  <h3>
+    <svg class="icon" aria-hidden="true"><use href="#icon-shield"/></svg>
+    No Account Required
+  </h3>
+  <p>We do not require you to create an account. This is a deliberate security decision: fewer stored credentials means a smaller attack surface. You provide only what is needed for your letter, and nothing more.</p>
+</div>
+
+<div class="security-section">
+  <h3>
+    <svg class="icon" aria-hidden="true"><use href="#icon-envelope-check"/></svg>
+    Infrastructure Security
+  </h3>
+  <p>Our application is protected by industry-standard security measures including HTTP security headers (via Helmet.js), CSRF token protection on all forms, rate limiting to prevent abuse, and secure session handling. We regularly review our security practices.</p>
+</div>
+
+<hr>
+
+<h2>Questions About Security?</h2>
+<p>If you have security concerns or questions about how we handle your data, please <a href="/contact">contact us</a>. We take every inquiry seriously.</p>
+
+<a href="/" class="cta-button">Send Certified Mail Now</a>
+
+<%- include('partials/footer') %>

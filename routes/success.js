@@ -29,11 +29,7 @@ router.get('/', (req, res) => {
     });
   }
 
-  res.render('success', {
-    order,
-    pending: false,
-    googleMapsKey: process.env.GOOGLE_MAPS_API_KEY || '',
-  });
+  return res.redirect(`/order/${order.order_token}`);
 });
 
 module.exports = router;

@@ -4,7 +4,7 @@
 
 <% if (notFound) { %>
   <div class="order-status-banner error">
-    <div class="status-icon">&#10007;</div>
+    <div class="status-icon"><svg class="icon" style="width:2.5rem;height:2.5rem" aria-hidden="true"><use href="#icon-x-circle"/></svg></div>
     <h2>Order Not Found</h2>
     <p>We couldn't find an order with this tracking link. Please check the link in your confirmation email.</p>
     <p style="margin-top:1rem"><a href="/contact">Contact us for help</a></p>
@@ -14,29 +14,34 @@
 
   <% if (order.delivery_status === 'failed') { %>
   <div class="order-status-banner warning">
-    <div class="status-icon">&#9888;</div>
+    <div class="status-icon"><svg class="icon" style="width:2.5rem;height:2.5rem" aria-hidden="true"><use href="#icon-warning"/></svg></div>
     <h2>Processing Issue</h2>
     <p>We encountered an issue processing your letter. Our team has been notified and will reach out to you within 24 hours to resolve this. No action is needed on your part.</p>
   </div>
   <% } else if (order.delivery_status === 'returned') { %>
   <div class="order-status-banner warning">
-    <div class="status-icon">&#8617;</div>
+    <div class="status-icon"><svg class="icon" style="width:2.5rem;height:2.5rem" aria-hidden="true"><use href="#icon-return"/></svg></div>
     <h2>Letter Returned</h2>
     <p>Your letter was returned by USPS. This usually means the address could not be delivered to. Our team will contact you to discuss next steps.</p>
   </div>
   <% } else if (order.delivery_status === 'delivered') { %>
   <div class="order-status-banner success">
-    <div class="status-icon">&#10003;</div>
+    <div class="status-icon"><svg class="icon" style="width:2.5rem;height:2.5rem" aria-hidden="true"><use href="#icon-check-circle"/></svg></div>
     <h2>Delivered</h2>
     <p>Your certified letter has been delivered to the recipient.</p>
   </div>
   <% } else { %>
   <div class="order-status-banner info">
-    <div class="status-icon">&#9993;</div>
+    <div class="status-icon"><svg class="icon" style="width:2.5rem;height:2.5rem" aria-hidden="true"><use href="#icon-mail"/></svg></div>
     <h2>Tracking Your Letter</h2>
     <p>Your certified letter is on its way.</p>
   </div>
   <% } %>
+
+  <div class="verified-transaction">
+    <svg class="icon" aria-hidden="true"><use href="#icon-shield"/></svg>
+    Verified Secure Transaction
+  </div>
 
   <% if (order.delivery_status !== 'failed' && order.delivery_status !== 'returned') { %>
   <div class="timeline">
@@ -44,7 +49,7 @@
       <div class="timeline-step <%= i < currentStepIndex ? 'completed' : '' %> <%= i === currentStepIndex ? 'active' : '' %> <%= i > currentStepIndex ? 'upcoming' : '' %>">
         <div class="timeline-dot">
           <% if (i < currentStepIndex) { %>
-            &#10003;
+            <svg class="icon" style="width:.85rem;height:.85rem" aria-hidden="true"><use href="#icon-check-circle"/></svg>
           <% } else if (i === currentStepIndex) { %>
             <%= i + 1 %>
           <% } else { %>
@@ -90,6 +95,20 @@
   </div>
   <% } %>
 
+  <% if (order.tracking_number) { %>
+  <div class="usps-tracking-card">
+    <div class="tracking-header">
+      <svg class="icon" aria-hidden="true"><use href="#icon-eagle"/></svg>
+      USPS Tracking
+    </div>
+    <div class="tracking-number"><%= order.tracking_number %></div>
+    <a href="https://tools.usps.com/go/TrackConfirmAction?tLabels=<%= order.tracking_number %>" target="_blank" rel="noopener" class="track-button">
+      <svg class="icon" aria-hidden="true"><use href="#icon-eagle"/></svg>
+      Track on USPS.com
+    </a>
+  </div>
+  <% } %>
+
   <div class="order-info-section">
     <div class="info-row">
       <span class="info-label">Tracking Number</span>
@@ -103,7 +122,12 @@
     </div>
     <div class="info-row">
       <span class="info-label">Service</span>
-      <span class="info-value">USPS Certified Mail<%= order.return_receipt ? ' + Return Receipt' : '' %></span>
+      <span class="info-value">
+        <span class="usps-badge" style="font-size:.6rem;padding:.2rem .5rem">
+          <svg class="icon" aria-hidden="true"><use href="#icon-eagle"/></svg>
+          USPS Certified Mail<%= order.return_receipt ? ' + Return Receipt' : '' %>
+        </span>
+      </span>
     </div>
     <div class="info-row">
       <span class="info-label">Amount Paid</span>

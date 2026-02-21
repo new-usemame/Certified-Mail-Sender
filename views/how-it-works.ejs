@@ -3,30 +3,36 @@
 <main id="main" class="content-page">
 
 <h2>How It Works</h2>
-<p class="subtitle">Send USPS Certified Mail from your computer in three simple steps.</p>
+<p class="subtitle">Send official USPS Certified Mail from your computer in three simple steps.</p>
 
 <div class="steps">
   <div class="step">
     <div class="step-number">1</div>
     <h3>Fill Out the Form</h3>
-    <p>Enter the sender and recipient addresses. Type your letter or upload a PDF.</p>
+    <p>Enter the sender and recipient addresses. Type your letter or upload a PDF. All data is encrypted in transit.</p>
   </div>
   <div class="step">
     <div class="step-number">2</div>
-    <h3>Pay Securely</h3>
-    <p>Check out through Stripe. Your payment is encrypted and secure.</p>
+    <h3>
+      <svg class="icon icon-inline" style="width:.85rem;height:.85rem" aria-hidden="true"><use href="#icon-lock"/></svg>
+      Pay Securely
+    </h3>
+    <p>Check out through Stripe, a PCI-DSS Level 1 certified payment processor. Your card information is encrypted and we never see or store it.</p>
   </div>
   <div class="step">
     <div class="step-number">3</div>
-    <h3>We Mail It</h3>
-    <p>We print your letter, add USPS Certified Mail postage, and mail it. You get a tracking number by email.</p>
+    <h3>
+      <svg class="icon icon-inline" style="width:.85rem;height:.85rem" aria-hidden="true"><use href="#icon-eagle"/></svg>
+      We Mail It via USPS
+    </h3>
+    <p>We print your letter, add official USPS Certified Mail postage, and mail it through the United States Postal Service. You get a tracking number by email.</p>
   </div>
 </div>
 
 <hr>
 
 <h2>What Is USPS Certified Mail?</h2>
-<p>USPS Certified Mail provides proof that you mailed a letter and proof of delivery (or attempted delivery). The sender receives a mailing receipt, and the delivery is recorded by USPS. It is commonly used for legal notices, demand letters, lease terminations, IRS correspondence, and other important documents where proof of mailing is required.</p>
+<p>USPS Certified Mail is an official United States Postal Service program that provides proof that you mailed a letter and proof of delivery (or attempted delivery). The sender receives a mailing receipt, and the delivery is recorded by USPS. It is commonly used for legal notices, demand letters, lease terminations, IRS correspondence, and other important documents where proof of mailing is required.</p>
 <p>With an optional Electronic Return Receipt, you also receive confirmation of who signed for the letter and when it was delivered.</p>
 
 <hr>
@@ -34,10 +40,17 @@
 <h2>Why Use Our Service?</h2>
 <ul>
   <li>No trip to the post office &mdash; send from anywhere with an internet connection</li>
-  <li>We handle printing, envelope stuffing, and certified postage</li>
-  <li>Tracking number emailed to you automatically</li>
+  <li>We handle printing, envelope stuffing, and official USPS Certified Mail postage</li>
+  <li>USPS tracking number emailed to you automatically</li>
   <li>Optional Electronic Return Receipt for delivery confirmation</li>
-  <li>Secure payment through Stripe &mdash; we never see your card details</li>
+  <li>
+    <svg class="icon icon-inline" style="width:.8rem;height:.8rem" aria-hidden="true"><use href="#icon-lock"/></svg>
+    Secure, encrypted payment through Stripe &mdash; we never see your card details
+  </li>
+  <li>
+    <svg class="icon icon-inline" style="width:.8rem;height:.8rem" aria-hidden="true"><use href="#icon-shield"/></svg>
+    256-bit SSL encryption on all connections &mdash; <a href="/security">learn more</a>
+  </li>
 </ul>
 
 <a href="/" class="cta-button">Send Certified Mail Now</a>
@@ -47,7 +60,7 @@
   "@context": "https://schema.org",
   "@type": "HowTo",
   "name": "How to Send USPS Certified Mail Online",
-  "description": "Send USPS Certified Mail from your computer in three simple steps.",
+  "description": "Send official USPS Certified Mail from your computer in three simple steps.",
   "step": [
     {
       "@type": "HowToStep",
@@ -59,13 +72,13 @@
       "@type": "HowToStep",
       "position": 2,
       "name": "Pay securely",
-      "text": "Check out through Stripe. Your payment is encrypted and secure."
+      "text": "Check out through Stripe, a PCI-DSS Level 1 certified payment processor. Your payment is encrypted and secure."
     },
     {
       "@type": "HowToStep",
       "position": 3,
-      "name": "We mail it",
-      "text": "We print your letter, add USPS Certified Mail postage, and mail it. You get a tracking number by email."
+      "name": "We mail it via USPS",
+      "text": "We print your letter, add official USPS Certified Mail postage, and mail it through the United States Postal Service. You get a tracking number by email."
     }
   ]
 }

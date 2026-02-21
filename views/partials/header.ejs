@@ -39,6 +39,9 @@
   }
   </script>
 
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
@@ -46,18 +49,71 @@
 </head>
 <body>
 
+<%- include('icons') %>
+
 <a href="#main" class="skip-link">Skip to content</a>
 
+<!-- Postal stripe -->
+<div class="postal-stripe" aria-hidden="true"></div>
+
+<!-- Top trust bar -->
+<div class="trust-bar">
+  <div class="trust-bar-inner">
+    <span class="trust-bar-item">
+      <svg class="icon" aria-hidden="true"><use href="#icon-lock"/></svg>
+      256-bit SSL Encrypted
+    </span>
+    <span class="trust-bar-sep" aria-hidden="true">&middot;</span>
+    <span class="trust-bar-item">
+      <svg class="icon" aria-hidden="true"><use href="#icon-stripe"/></svg>
+      Secure Payments by Stripe
+    </span>
+    <span class="trust-bar-sep" aria-hidden="true">&middot;</span>
+    <span class="trust-bar-item">
+      <svg class="icon" aria-hidden="true"><use href="#icon-eagle"/></svg>
+      Ships via USPS
+    </span>
+  </div>
+</div>
+
 <header class="site-header">
-  <a href="/" style="text-decoration:none;color:inherit"><div class="postmark">USPS<br>Certified</div>
-  <h1 class="site-name">Certified Mail Sender</h1></a>
-  <p class="site-tagline">Official USPS Certified Mail, Sent Online</p>
+  <a href="/" class="site-brand">
+    <!-- Shield + Eagle Logo -->
+    <svg class="site-logo" viewBox="0 0 80 96" xmlns="http://www.w3.org/2000/svg" aria-label="Certified Mail Sender logo">
+      <!-- Shield body -->
+      <path d="M40 2 L74 16 V44 C74 68 40 90 40 90 C40 90 6 68 6 44 V16 Z" fill="none" stroke="#1B2A4A" stroke-width="3"/>
+      <path d="M40 6 L70 18 V44 C70 65 40 86 40 86 C40 86 10 65 10 44 V18 Z" fill="#FAFAF7" stroke="#1B2A4A" stroke-width="1.5"/>
+      <!-- Eagle at top -->
+      <g transform="translate(22, 14) scale(0.7)">
+        <path d="M46 2c-2 3-7 6-12 7-1-2-3-4-6-5 0 0-1 4 1 8-3 1-6 3-8 6-1-2-2-5-1-8-4 2-7 6-8 10C7 16 4 12 4 12s-1 8 3 13c0 0-3 1-5 1 4 4 10 6 16 6 12 0 20-8 24-17 1-2 1-5 1-7 0-2-1-4-2-6l3-1V2z" fill="#1B2A4A"/>
+      </g>
+      <!-- Envelope with check -->
+      <g transform="translate(22, 48)">
+        <rect x="0" y="4" width="36" height="24" rx="2" fill="none" stroke="#1B2A4A" stroke-width="2"/>
+        <polyline points="0,6 18,18 36,6" fill="none" stroke="#1B2A4A" stroke-width="2"/>
+        <circle cx="28" cy="24" r="8" fill="#FAFAF7" stroke="#2d6a4f" stroke-width="2"/>
+        <polyline points="24,24 27,27 32,21" fill="none" stroke="#2d6a4f" stroke-width="2"/>
+      </g>
+      <!-- Banner at bottom -->
+      <text x="40" y="88" text-anchor="middle" font-family="'Courier Prime', monospace" font-size="5" font-weight="700" fill="#1B2A4A" letter-spacing="0.5">CERTIFIED MAIL SENDER</text>
+    </svg>
+    <h1 class="site-name">Certified Mail Sender</h1>
+  </a>
+  <p class="site-tagline">Official USPS Certified Mail Service, Sent Online</p>
+  <div class="verified-badge">
+    <svg class="icon" aria-hidden="true"><use href="#icon-shield"/></svg>
+    Verified Secure Service
+  </div>
   <nav class="site-nav" aria-label="Main navigation">
     <a href="/how-it-works"<%- (typeof currentPath !== 'undefined' && currentPath === '/how-it-works') ? ' class="active"' : '' %>>How It Works</a>
     <a href="/pricing"<%- (typeof currentPath !== 'undefined' && currentPath === '/pricing') ? ' class="active"' : '' %>>Pricing</a>
     <a href="/faq"<%- (typeof currentPath !== 'undefined' && currentPath === '/faq') ? ' class="active"' : '' %>>FAQ</a>
     <a href="/about"<%- (typeof currentPath !== 'undefined' && currentPath === '/about') ? ' class="active"' : '' %>>About</a>
     <a href="/contact"<%- (typeof currentPath !== 'undefined' && currentPath === '/contact') ? ' class="active"' : '' %>>Contact</a>
+    <a href="/security"<%- (typeof currentPath !== 'undefined' && currentPath === '/security') ? ' class="active"' : '' %>>
+      <svg class="icon icon-inline" aria-hidden="true"><use href="#icon-lock"/></svg>
+      Security
+    </a>
     <a href="/"<%- (typeof currentPath !== 'undefined' && currentPath === '/') ? ' class="active"' : '' %>>Send Mail</a>
   </nav>
 </header>

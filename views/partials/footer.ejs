@@ -1,16 +1,46 @@
 </main>
 
 <footer>
+  <div class="footer-trust-row">
+    <h3>Your Security Matters</h3>
+    <div class="trust-badges">
+      <div class="trust-badge">
+        <svg class="icon" aria-hidden="true"><use href="#icon-lock"/></svg>
+        <span class="trust-badge-label">SSL Secured</span>
+        <span class="trust-badge-desc">All data encrypted in transit with 256-bit SSL</span>
+      </div>
+      <div class="trust-badge">
+        <svg class="icon" aria-hidden="true"><use href="#icon-shield"/></svg>
+        <span class="trust-badge-label">PCI Compliant</span>
+        <span class="trust-badge-desc">Payments processed by Stripe, PCI-DSS Level 1</span>
+      </div>
+      <div class="trust-badge">
+        <svg class="icon" aria-hidden="true"><use href="#icon-eagle"/></svg>
+        <span class="trust-badge-label">USPS Official</span>
+        <span class="trust-badge-desc">Delivered through the United States Postal Service</span>
+      </div>
+      <div class="trust-badge">
+        <svg class="icon" aria-hidden="true"><use href="#icon-data-shield"/></svg>
+        <span class="trust-badge-label">Data Protected</span>
+        <span class="trust-badge-desc">We never sell or share your personal information</span>
+      </div>
+    </div>
+  </div>
+
   <nav class="footer-nav" aria-label="Footer navigation">
     <a href="/how-it-works">How It Works</a>
     <a href="/pricing">Pricing</a>
     <a href="/faq">FAQ</a>
     <a href="/about">About</a>
     <a href="/contact">Contact</a>
+    <a href="/security">Security</a>
     <a href="/">Send Mail</a>
   </nav>
-  <p class="footer-tagline">USPS Certified Mail &mdash; Sent Online, Delivered to Their Door</p>
-  <p class="footer-trust">&#x1F512; Secure payments processed by Stripe</p>
+  <p class="footer-tagline">Official USPS Certified Mail Service &mdash; Sent Online, Delivered to Their Door</p>
+  <p class="footer-trust">
+    <svg class="icon" style="width:.85rem;height:.85rem;vertical-align:-0.15em" aria-hidden="true"><use href="#icon-lock"/></svg>
+    Secure payments processed by Stripe &middot; 256-bit SSL encryption
+  </p>
   <p>&copy; <%= new Date().getFullYear() %> Certified Mail Sender</p>
 </footer>
 
