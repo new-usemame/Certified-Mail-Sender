@@ -1,0 +1,152 @@
+<%- include('partials/header', { title: order ? 'Track Your Letter | Certified Mail Sender' : 'Order Not Found | Certified Mail Sender' }) %>
+
+<main id="main">
+
+<% if (notFound) { %>
+  <div class="order-status-banner error">
+    <div class="status-icon">&#10007;</div>
+    <h2>Order Not Found</h2>
+    <p>We couldn't find an order with this tracking link. Please check the link in your confirmation email.</p>
+    <p style="margin-top:1rem"><a href="/contact">Contact us for help</a></p>
+  </div>
+
+<% } else { %>
+
+  <% if (order.delivery_status === 'failed') { %>
+  <div class="order-status-banner warning">
+    <div class="status-icon">&#9888;</div>
+    <h2>Processing Issue</h2>
+    <p>We encountered an issue processing your letter. Our team has been notified and will reach out to you within 24 hours to resolve this. No action is needed on your part.</p>
+  </div>
+  <% } else if (order.delivery_status === 'returned') { %>
+  <div class="order-status-banner warning">
+    <div class="status-icon">&#8617;</div>
+    <h2>Letter Returned</h2>
+    <p>Your letter was returned by USPS. This usually means the address could not be delivered to. Our team will contact you to discuss next steps.</p>
+  </div>
+  <% } else if (order.delivery_status === 'delivered') { %>
+  <div class="order-status-banner success">
+    <div class="status-icon">&#10003;</div>
+    <h2>Delivered</h2>
+    <p>Your certified letter has been delivered to the recipient.</p>
+  </div>
+  <% } else { %>
+  <div class="order-status-banner info">
+    <div class="status-icon">&#9993;</div>
+    <h2>Tracking Your Letter</h2>
+    <p>Your certified letter is on its way.</p>
+  </div>
+  <% } %>
+
+  <% if (order.delivery_status !== 'failed' && order.delivery_status !== 'returned') { %>
+  <div class="timeline">
+    <% timelineSteps.forEach(function(step, i) { %>
+      <div class="timeline-step <%= i < currentStepIndex ? 'completed' : '' %> <%= i === currentStepIndex ? 'active' : '' %> <%= i > currentStepIndex ? 'upcoming' : '' %>">
+        <div class="timeline-dot">
+          <% if (i < currentStepIndex) { %>
+            &#10003;
+          <% } else if (i === currentStepIndex) { %>
+            <%= i + 1 %>
+          <% } else { %>
+            <%= i + 1 %>
+          <% } %>
+        </div>
+        <div class="timeline-label"><%= step.label %></div>
+      </div>
+      <% if (i < timelineSteps.length - 1) { %>
+        <div class="timeline-connector <%= i < currentStepIndex ? 'completed' : '' %>"></div>
+      <% } %>
+    <% }); %>
+  </div>
+  <% } %>
+
+  <% if (typeof phoneSaved !== 'undefined' && phoneSaved) { %>
+  <div class="msg success" style="margin-bottom:1rem">
+    Phone number saved.
+  </div>
+  <% } %>
+
+  <div class="order-details-grid">
+    <div class="order-detail-card">
+      <div class="detail-label">From</div>
+      <div class="detail-value"><%= order.sender_name %></div>
+      <div class="detail-sub"><%= order.sender_address %></div>
+    </div>
+    <div class="order-detail-card">
+      <div class="detail-label">To</div>
+      <div class="detail-value"><%= order.recipient_name %></div>
+      <div class="detail-sub"><%= order.recipient_address %></div>
+    </div>
+  </div>
+
+  <% if (googleMapsKey && order.recipient_address) { %>
+  <div class="map-container">
+    <img
+      src="https://maps.googleapis.com/maps/api/staticmap?center=<%= encodeURIComponent(order.recipient_address) %>&zoom=14&size=600x200&scale=2&markers=color:red|<%= encodeURIComponent(order.recipient_address) %>&key=<%= googleMapsKey %>"
+      alt="Recipient location map"
+      class="static-map"
+      loading="lazy"
+    >
+  </div>
+  <% } %>
+
+  <div class="order-info-section">
+    <div class="info-row">
+      <span class="info-label">Tracking Number</span>
+      <span class="info-value">
+        <% if (order.tracking_number) { %>
+          <a href="https://tools.usps.com/go/TrackConfirmAction?tLabels=<%= order.tracking_number %>" target="_blank" rel="noopener"><%= order.tracking_number %></a>
+        <% } else { %>
+          <span class="text-muted">Assigning&hellip;</span>
+        <% } %>
+      </span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Service</span>
+      <span class="info-value">USPS Certified Mail<%= order.return_receipt ? ' + Return Receipt' : '' %></span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Amount Paid</span>
+      <span class="info-value">$<%= (order.amount_cents / 100).toFixed(2) %></span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Email</span>
+      <span class="info-value"><%= order.customer_email %></span>
+    </div>
+    <% if (order.phone_number) { %>
+    <div class="info-row">
+      <span class="info-label">Phone</span>
+      <span class="info-value"><%= order.phone_number %></span>
+    </div>
+    <% } %>
+    <div class="info-row">
+      <span class="info-label">Ordered</span>
+      <span class="info-value"><%= new Date(order.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></span>
+    </div>
+    <% if (order.delivery_status_updated_at) { %>
+    <div class="info-row">
+      <span class="info-label">Last Updated</span>
+      <span class="info-value"><%= new Date(order.delivery_status_updated_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' }) %></span>
+    </div>
+    <% } %>
+  </div>
+
+  <% if (!order.phone_number) { %>
+  <div class="add-info-section">
+    <form action="/order/<%= order.order_token %>/phone" method="POST" class="inline-form">
+      <label for="phone_number">Add Phone Number <span class="optional-tag">(optional)</span></label>
+      <div class="inline-form-row">
+        <input type="tel" id="phone_number" name="phone_number" placeholder="(555) 123-4567" pattern="[\d\s\-\(\)\+]+" required>
+        <button type="submit">Save</button>
+      </div>
+    </form>
+  </div>
+  <% } %>
+
+  <div style="margin-top:1.5rem;text-align:center">
+    <a href="/" class="cta-button">Send Another Letter</a>
+  </div>
+
+<% } %>
+
+<%- include('partials/footer') %>

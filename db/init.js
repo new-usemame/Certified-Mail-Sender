@@ -10,4 +10,7 @@ db.pragma('journal_mode = WAL');
 const schema = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf8');
 db.exec(schema);
 
+const migrate001 = require('./migrate-001-tracking');
+migrate001.run(db);
+
 module.exports = db;

@@ -11,5 +11,11 @@ CREATE TABLE IF NOT EXISTS orders (
   tracking_number TEXT,
   status TEXT DEFAULT 'pending',
   amount_cents INTEGER,
+  order_token TEXT UNIQUE,
+  phone_number TEXT,
+  scm_queue_id TEXT,
+  delivery_status TEXT DEFAULT 'processing',
+  delivery_status_detail TEXT,
+  delivery_status_updated_at DATETIME,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );

@@ -31,6 +31,7 @@ app.use('/', require('./routes/index'));
 app.use('/checkout', require('./routes/checkout'));
 app.use('/success', require('./routes/success'));
 app.use('/cancel', require('./routes/cancel'));
+app.use('/order', require('./routes/order'));
 app.use('/how-it-works', require('./routes/how-it-works'));
 app.use('/pricing', require('./routes/pricing'));
 app.use('/faq', require('./routes/faq'));

@@ -8,10 +8,12 @@ function getResend() {
   return _resend;
 }
 
-async function sendCustomerEmail({ to, trackingNumber, recipientName, recipientAddress, returnReceipt }) {
+async function sendCustomerEmail({ to, trackingNumber, recipientName, recipientAddress, returnReceipt, orderToken }) {
   const rrLine = returnReceipt
     ? 'Electronic Return Receipt: Included (you will be notified upon delivery)\n'
     : '';
+
+  const trackingPageUrl = `${process.env.BASE_URL}/order/${orderToken}`;
 
   await getResend().emails.send({
     from: FROM_ADDRESS,
@@ -26,6 +28,9 @@ async function sendCustomerEmail({ to, trackingNumber, recipientName, recipientA
       rrLine,
       'You can track your letter at:',
       `https://tools.usps.com/go/TrackConfirmAction?tLabels=${trackingNumber || ''}`,
+      '',
+      'Track your letter\'s progress anytime:',
+      trackingPageUrl,
       '',
       '— Certified Mail Sender',
     ].join('\n'),
@@ -71,6 +76,28 @@ async function sendFailureAlert({ orderId, error }) {
   });
 }
 
+async function sendCustomerFailureEmail({ to, orderToken }) {
+  const trackingPageUrl = `${process.env.BASE_URL}/order/${orderToken}`;
+
+  await getResend().emails.send({
+    from: FROM_ADDRESS,
+    to,
+    subject: 'Update on your certified mail order',
+    text: [
+      'We encountered an issue processing your certified letter.',
+      '',
+      'Our team has been notified and will reach out to you within 24 hours to resolve this. No action is needed on your part.',
+      '',
+      'You can check the status of your order anytime:',
+      trackingPageUrl,
+      '',
+      'We apologize for the inconvenience.',
+      '',
+      '— Certified Mail Sender',
+    ].join('\n'),
+  });
+}
+
 async function sendContactEmail({ name, email, subject, message }) {
   await getResend().emails.send({
     from: FROM_ADDRESS,
@@ -92,4 +119,4 @@ async function sendContactEmail({ name, email, subject, message }) {
   });
 }
 
-module.exports = { sendCustomerEmail, sendOwnerEmail, sendFailureAlert, sendContactEmail };
+module.exports = { sendCustomerEmail, sendOwnerEmail, sendFailureAlert, sendCustomerFailureEmail, sendContactEmail };

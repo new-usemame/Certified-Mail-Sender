@@ -34,7 +34,7 @@ async function createCheckoutSession({ metadata, returnReceipt }) {
       },
     ],
     metadata,
-    success_url: `${process.env.BASE_URL}/success`,
+    success_url: `${process.env.BASE_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${process.env.BASE_URL}/cancel`,
   });
 }
