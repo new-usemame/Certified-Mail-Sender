@@ -14,13 +14,13 @@ function getPriceCents(returnReceipt) {
     : parseInt(process.env.PRICE_CERTIFIED || '1000', 10);
 }
 
-async function createCheckoutSession({ metadata, returnReceipt }) {
+async function createCheckoutSession({ metadata, returnReceipt, billingAddress }) {
   const priceCents = getPriceCents(returnReceipt);
   const label = returnReceipt
     ? 'USPS Certified Mail + Return Receipt'
     : 'USPS Certified Mail';
 
-  return getStripe().checkout.sessions.create({
+  const sessionParams = {
     payment_method_types: ['card'],
     mode: 'payment',
     customer_email: metadata.customer_email,
@@ -38,7 +38,25 @@ async function createCheckoutSession({ metadata, returnReceipt }) {
     metadata,
     success_url: `${process.env.BASE_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${process.env.BASE_URL}/cancel`,
-  });
+  };
+
+  if (billingAddress) {
+    sessionParams.payment_intent_data = {
+      shipping: {
+        name: billingAddress.name,
+        address: {
+          line1: billingAddress.line1,
+          line2: billingAddress.line2 || '',
+          city: billingAddress.city,
+          state: billingAddress.state,
+          postal_code: billingAddress.postal_code,
+          country: billingAddress.country,
+        },
+      },
+    };
+  }
+
+  return getStripe().checkout.sessions.create(sessionParams);
 }
 
 function constructWebhookEvent(rawBody, sig) {

@@ -3,26 +3,268 @@
 <main id="main">
 
 <h2>Send Certified Mail</h2>
-<p class="subtitle">No account needed. Just fill out the form, pay, and we print, certify, and mail it through USPS.</p>
-
-<div class="trust-strip">
-  <span class="trust-strip-item">
-    <svg class="icon" aria-hidden="true"><use href="#icon-lock"/></svg>
-    Encrypted &amp; Secure
-  </span>
-  <span class="trust-strip-sep" aria-hidden="true">&middot;</span>
-  <span class="trust-strip-item">
-    <svg class="icon" aria-hidden="true"><use href="#icon-shield"/></svg>
-    Your data is protected
-  </span>
-  <span class="trust-strip-sep" aria-hidden="true">&middot;</span>
-  <span class="trust-strip-item">
-    <svg class="icon" aria-hidden="true"><use href="#icon-envelope-check"/></svg>
-    Official USPS Certified Mail
-  </span>
-</div>
+<p class="subtitle">Fill out the form. Pay. We print, certify, and mail it through USPS.</p>
 
 <div class="no-signup-stamp">No Signup Required</div>
+
+<% if (typeof error !== 'undefined' && error) { %>
+  <div class="msg error" role="alert"><%= error %></div>
+<% } %>
+
+<% var f = (typeof form !== 'undefined' && form) ? form : {}; %>
+
+<div class="wizard" id="wizard" role="region" aria-label="Send certified mail">
+
+  <!-- Progress bar -->
+  <div class="wizard-progress" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="3" aria-label="Step 1 of 3">
+    <div class="wizard-progress-step active" data-step="0">
+      <div class="wizard-dot">1</div>
+      <div class="wizard-step-label">Recipient</div>
+    </div>
+    <div class="wizard-progress-connector" data-step="0"></div>
+    <div class="wizard-progress-step" data-step="1">
+      <div class="wizard-dot">2</div>
+      <div class="wizard-step-label">Sender</div>
+    </div>
+    <div class="wizard-progress-connector" data-step="1"></div>
+    <div class="wizard-progress-step" data-step="2">
+      <div class="wizard-dot">3</div>
+      <div class="wizard-step-label">Review</div>
+    </div>
+  </div>
+
+  <!-- Slide viewport -->
+  <div class="wizard-viewport">
+    <div class="wizard-track" id="wizardTrack">
+
+      <!-- ===== STEP 1: Recipient ===== -->
+      <div class="wizard-slide" data-slide="0" aria-hidden="false">
+        <fieldset class="form-section">
+          <legend class="section-label">Who are you sending to?</legend>
+          <span class="encrypted-label"><svg class="icon" aria-hidden="true"><use href="#icon-lock"/></svg> Encrypted</span>
+
+          <label for="w_recipient_name">Full Name</label>
+          <input type="text" id="w_recipient_name" autocomplete="name" maxlength="200" value="<%= f.recipient_name || '' %>" required>
+
+          <label for="w_recipient_street">Street Address</label>
+          <input type="text" id="w_recipient_street" autocomplete="address-line1" maxlength="200" value="<%= f.recipient_street || '' %>" required>
+
+          <div class="reveal-group" id="recipientReveal">
+            <label for="w_recipient_street2">Apt / Suite / Unit <span class="optional-tag">(optional)</span></label>
+            <input type="text" id="w_recipient_street2" autocomplete="address-line2" maxlength="200" value="<%= f.recipient_street2 || '' %>">
+
+            <div class="row">
+              <div>
+                <label for="w_recipient_city">City</label>
+                <input type="text" id="w_recipient_city" autocomplete="address-level2" maxlength="100" value="<%= f.recipient_city || '' %>" required>
+              </div>
+              <div>
+                <label for="w_recipient_state">State</label>
+                <input type="text" id="w_recipient_state" autocomplete="address-level1" maxlength="2" value="<%= f.recipient_state || '' %>" required>
+              </div>
+              <div>
+                <label for="w_recipient_zip">ZIP</label>
+                <input type="text" id="w_recipient_zip" autocomplete="postal-code" maxlength="10" value="<%= f.recipient_zip || '' %>" required>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" class="wizard-btn wizard-btn-next" id="btnToSender">
+            Continue to Sender
+            <svg class="icon" aria-hidden="true" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd"/></svg>
+          </button>
+        </fieldset>
+      </div>
+
+      <!-- ===== STEP 2: Sender ===== -->
+      <div class="wizard-slide" data-slide="1" aria-hidden="true">
+        <fieldset class="form-section">
+          <legend class="section-label">Your return address</legend>
+          <span class="encrypted-label"><svg class="icon" aria-hidden="true"><use href="#icon-lock"/></svg> Encrypted</span>
+
+          <label for="w_sender_name">Full Name</label>
+          <input type="text" id="w_sender_name" autocomplete="name" maxlength="200" value="<%= f.sender_name || '' %>" required>
+
+          <label for="w_sender_street">Street Address</label>
+          <input type="text" id="w_sender_street" autocomplete="address-line1" maxlength="200" value="<%= f.sender_street || '' %>" required>
+
+          <div class="reveal-group" id="senderReveal">
+            <label for="w_sender_street2">Apt / Suite / Unit <span class="optional-tag">(optional)</span></label>
+            <input type="text" id="w_sender_street2" autocomplete="address-line2" maxlength="200" value="<%= f.sender_street2 || '' %>">
+
+            <div class="row">
+              <div>
+                <label for="w_sender_city">City</label>
+                <input type="text" id="w_sender_city" autocomplete="address-level2" maxlength="100" value="<%= f.sender_city || '' %>" required>
+              </div>
+              <div>
+                <label for="w_sender_state">State</label>
+                <input type="text" id="w_sender_state" autocomplete="address-level1" maxlength="2" value="<%= f.sender_state || '' %>" required>
+              </div>
+              <div>
+                <label for="w_sender_zip">ZIP</label>
+                <input type="text" id="w_sender_zip" autocomplete="postal-code" maxlength="10" value="<%= f.sender_zip || '' %>" required>
+              </div>
+            </div>
+          </div>
+
+          <label for="w_customer_email">Your Email (for tracking info)</label>
+          <input type="email" id="w_customer_email" autocomplete="email" maxlength="254" value="<%= f.customer_email || '' %>" required>
+
+          <label for="w_backup_email">Backup Email <span class="optional-tag">(optional)</span></label>
+          <input type="email" id="w_backup_email" autocomplete="email" maxlength="254" value="<%= f.backup_email || '' %>">
+
+          <div class="wizard-btn-row">
+            <button type="button" class="wizard-btn wizard-btn-back" id="btnBackToRecipient">
+              <svg class="icon" aria-hidden="true" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd"/></svg>
+              Back
+            </button>
+            <button type="button" class="wizard-btn wizard-btn-next" id="btnToReview">
+              Review &amp; Send
+              <svg class="icon" aria-hidden="true" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd"/></svg>
+            </button>
+          </div>
+        </fieldset>
+      </div>
+
+      <!-- ===== STEP 3: Review & Checkout ===== -->
+      <div class="wizard-slide" data-slide="2" aria-hidden="true">
+        <div class="review-section">
+          <h3 class="review-heading">Review Your Certified Mail</h3>
+
+          <div class="review-card" id="reviewTo">
+            <div class="review-card-header">
+              <span class="review-card-label">To (Recipient)</span>
+              <button type="button" class="review-edit-btn" data-goto="0">Edit</button>
+            </div>
+            <div class="review-card-body" id="reviewToBody"></div>
+          </div>
+
+          <div class="review-card" id="reviewFrom">
+            <div class="review-card-header">
+              <span class="review-card-label">From (Sender)</span>
+              <button type="button" class="review-edit-btn" data-goto="1">Edit</button>
+            </div>
+            <div class="review-card-body" id="reviewFromBody"></div>
+          </div>
+
+          <div class="review-card" id="reviewLetter">
+            <div class="review-card-header">
+              <span class="review-card-label">Letter Content</span>
+            </div>
+            <div class="review-card-body" id="reviewLetterBody"></div>
+          </div>
+
+          <fieldset class="form-section review-options">
+            <legend class="section-label">Options</legend>
+
+            <div class="checkbox-row">
+              <input type="checkbox" id="w_return_receipt" value="1">
+              <label for="w_return_receipt">Add Electronic Return Receipt (+$<%= priceRRAddon %>)</label>
+            </div>
+            <p class="option-desc">Recipient signs upon delivery. Same legal standing as the USPS Green Card &mdash; delivered as a downloadable PDF within 24 hours.</p>
+
+            <div class="price-box" id="price_display" aria-live="polite">Total: $<%= priceCertified %></div>
+          </fieldset>
+
+          <div class="checkbox-row" style="margin-top:.75rem">
+            <input type="checkbox" id="w_use_sender_billing" checked>
+            <label for="w_use_sender_billing">Use sender address for billing</label>
+          </div>
+
+          <div class="active-security-msg">
+            <svg class="icon" aria-hidden="true"><use href="#icon-shield"/></svg>
+            Your connection is encrypted. Your data is protected.
+          </div>
+
+          <div class="secure-checkout-box">
+            <h3>
+              <svg class="icon" aria-hidden="true"><use href="#icon-shield"/></svg>
+              Secure Checkout
+            </h3>
+            <p>Your payment is processed by Stripe. We never store or see your credit card information.</p>
+            <span class="stripe-badge">
+              <svg class="icon" aria-hidden="true"><use href="#icon-stripe"/></svg>
+              Powered by Stripe
+            </span>
+          </div>
+
+          <div style="margin-top:.5rem">
+            <span class="usps-badge">
+              <svg class="icon" aria-hidden="true"><use href="#icon-eagle"/></svg>
+              Ships via United States Postal Service
+            </span>
+          </div>
+
+          <div class="what-happens-next">
+            <h3 class="what-happens-next-title">What Happens Next</h3>
+            <ol class="next-steps">
+              <li><strong>Pay securely</strong> via Stripe &mdash; we never see your card details</li>
+              <li><strong>We print, certify, and mail</strong> your letter through USPS</li>
+              <li><strong>Receive email confirmation</strong> with your USPS tracking number</li>
+              <li><strong>Track delivery &amp; download</strong> official USPS proof documents</li>
+            </ol>
+          </div>
+
+          <div class="wizard-btn-row">
+            <button type="button" class="wizard-btn wizard-btn-back" id="btnBackToSender">
+              <svg class="icon" aria-hidden="true" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd"/></svg>
+              Back
+            </button>
+            <button type="button" class="wizard-btn wizard-btn-submit" id="btnSubmit">
+              <svg class="icon" aria-hidden="true"><use href="#icon-lock"/></svg>
+              Pay &amp; Send Certified Mail
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /wizard-track -->
+  </div><!-- /wizard-viewport -->
+
+  <!-- Content panel (always visible below slides) -->
+  <div class="wizard-content" id="wizardContent">
+    <fieldset class="form-section">
+      <legend class="section-label">Letter Content</legend>
+      <span class="encrypted-label"><svg class="icon" aria-hidden="true"><use href="#icon-lock"/></svg> Encrypted</span>
+
+      <div class="content-tabs" role="tablist">
+        <button type="button" role="tab" class="content-tab active" id="tabText" aria-selected="true" aria-controls="panelText">Write Letter</button>
+        <button type="button" role="tab" class="content-tab" id="tabPdf" aria-selected="false" aria-controls="panelPdf">Upload PDF</button>
+      </div>
+
+      <div id="panelText" role="tabpanel" aria-labelledby="tabText">
+        <div id="quillEditor"></div>
+      </div>
+
+      <div id="panelPdf" role="tabpanel" aria-labelledby="tabPdf" style="display:none">
+        <div class="pdf-dropzone" id="pdfDropzone">
+          <svg class="icon pdf-dropzone-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="12" y1="18" x2="12" y2="12"/>
+            <polyline points="9 15 12 12 15 15"/>
+          </svg>
+          <p class="pdf-dropzone-text">Drag &amp; drop a PDF here, or</p>
+          <label for="w_letter_pdf" class="pdf-browse-btn">Browse Files</label>
+          <input type="file" id="w_letter_pdf" accept="application/pdf" class="sr-only">
+          <p class="pdf-dropzone-hint">PDF only, max 5 MB</p>
+        </div>
+        <div class="pdf-file-info" id="pdfFileInfo" style="display:none">
+          <svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+          </svg>
+          <span id="pdfFileName"></span>
+          <button type="button" class="pdf-remove-btn" id="pdfRemoveBtn" aria-label="Remove PDF">&times;</button>
+        </div>
+      </div>
+
+      <div class="content-error" id="contentError" style="display:none" role="alert"></div>
+    </fieldset>
+  </div><!-- /wizard-content -->
+
+</div><!-- /wizard -->
 
 <div class="whats-included">
   <h3 class="whats-included-title">
@@ -68,164 +310,40 @@
   </ul>
 </div>
 
-<% if (typeof error !== 'undefined' && error) { %>
-  <div class="msg error" role="alert"><%= error %></div>
-<% } %>
-
-<% var f = (typeof form !== 'undefined' && form) ? form : {}; %>
-<form action="/checkout" method="POST" enctype="multipart/form-data">
+<!-- Hidden form for actual submission -->
+<form action="/checkout" method="POST" enctype="multipart/form-data" id="hiddenForm" style="display:none">
   <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-
-  <fieldset class="form-section">
-    <legend class="section-label">Sender</legend>
-    <span class="encrypted-label"><svg class="icon" aria-hidden="true"><use href="#icon-lock"/></svg> Encrypted</span>
-
-    <label for="sender_name">Full Name</label>
-    <input type="text" id="sender_name" name="sender_name" autocomplete="name" maxlength="200" value="<%= f.sender_name || '' %>" required>
-
-    <label for="sender_street">Street Address</label>
-    <input type="text" id="sender_street" name="sender_street" autocomplete="address-line1" maxlength="200" value="<%= f.sender_street || '' %>" required>
-
-    <label for="sender_street2">Apt / Suite / Unit <span class="optional-tag">(optional)</span></label>
-    <input type="text" id="sender_street2" name="sender_street2" autocomplete="address-line2" maxlength="200" value="<%= f.sender_street2 || '' %>">
-
-    <div class="row">
-      <div>
-        <label for="sender_city">City</label>
-        <input type="text" id="sender_city" name="sender_city" autocomplete="address-level2" maxlength="100" value="<%= f.sender_city || '' %>" required>
-      </div>
-      <div>
-        <label for="sender_state">State</label>
-        <input type="text" id="sender_state" name="sender_state" autocomplete="address-level1" maxlength="2" value="<%= f.sender_state || '' %>" required>
-      </div>
-      <div>
-        <label for="sender_zip">ZIP</label>
-        <input type="text" id="sender_zip" name="sender_zip" autocomplete="postal-code" maxlength="10" value="<%= f.sender_zip || '' %>" required>
-      </div>
-    </div>
-
-    <label for="customer_email">Your Email (for tracking info)</label>
-    <input type="email" id="customer_email" name="customer_email" autocomplete="email" maxlength="254" value="<%= f.customer_email || '' %>" required>
-
-    <label for="backup_email">Backup Email <span class="optional">(optional)</span></label>
-    <input type="email" id="backup_email" name="backup_email" autocomplete="email" maxlength="254" value="<%= f.backup_email || '' %>">
-  </fieldset>
-
-  <fieldset class="form-section">
-    <legend class="section-label">Recipient</legend>
-    <span class="encrypted-label"><svg class="icon" aria-hidden="true"><use href="#icon-lock"/></svg> Encrypted</span>
-
-    <label for="recipient_name">Full Name</label>
-    <input type="text" id="recipient_name" name="recipient_name" maxlength="200" value="<%= f.recipient_name || '' %>" required>
-
-    <label for="recipient_street">Street Address</label>
-    <input type="text" id="recipient_street" name="recipient_street" maxlength="200" value="<%= f.recipient_street || '' %>" required>
-
-    <label for="recipient_street2">Apt / Suite / Unit <span class="optional-tag">(optional)</span></label>
-    <input type="text" id="recipient_street2" name="recipient_street2" maxlength="200" value="<%= f.recipient_street2 || '' %>">
-
-    <div class="row">
-      <div>
-        <label for="recipient_city">City</label>
-        <input type="text" id="recipient_city" name="recipient_city" maxlength="100" value="<%= f.recipient_city || '' %>" required>
-      </div>
-      <div>
-        <label for="recipient_state">State</label>
-        <input type="text" id="recipient_state" name="recipient_state" maxlength="2" value="<%= f.recipient_state || '' %>" required>
-      </div>
-      <div>
-        <label for="recipient_zip">ZIP</label>
-        <input type="text" id="recipient_zip" name="recipient_zip" maxlength="10" value="<%= f.recipient_zip || '' %>" required>
-      </div>
-    </div>
-  </fieldset>
-
-  <fieldset class="form-section">
-    <legend class="section-label">Letter Content</legend>
-    <span class="encrypted-label"><svg class="icon" aria-hidden="true"><use href="#icon-lock"/></svg> Encrypted</span>
-
-    <div class="radio-group">
-      <div>
-        <input type="radio" id="mode_text" name="letter_mode" value="text" <%= f.letter_mode === 'pdf' ? '' : 'checked' %> onchange="toggleMode()">
-        <label for="mode_text">Type / paste text</label>
-      </div>
-      <div>
-        <input type="radio" id="mode_pdf" name="letter_mode" value="pdf" <%= f.letter_mode === 'pdf' ? 'checked' : '' %> onchange="toggleMode()">
-        <label for="mode_pdf">Upload PDF</label>
-      </div>
-    </div>
-
-    <div id="text_input" <%= f.letter_mode === 'pdf' ? 'style="display:none"' : '' %>>
-      <label for="letter_text">Letter Text</label>
-      <textarea id="letter_text" name="letter_text" placeholder="Type or paste your letter here..."><%= f.letter_text || '' %></textarea>
-    </div>
-
-    <div id="pdf_input" <%= f.letter_mode === 'pdf' ? '' : 'style="display:none"' %>>
-      <label for="letter_pdf">Upload PDF</label>
-      <input type="file" id="letter_pdf" name="letter_pdf" accept="application/pdf">
-    </div>
-  </fieldset>
-
-  <fieldset class="form-section">
-    <legend class="section-label">Options</legend>
-
-    <div class="checkbox-row">
-      <input type="checkbox" id="return_receipt" name="return_receipt" value="1" <%= f.return_receipt === '1' ? 'checked' : '' %> onchange="updatePrice()">
-      <label for="return_receipt">Add Electronic Return Receipt (+$<%= priceRRAddon %>)</label>
-    </div>
-    <p class="option-desc">Recipient signs upon delivery. Replaces the traditional USPS Green Card (PS3811) with the same legal standing &mdash; delivered as a downloadable PDF within 24 hours.</p>
-
-    <div class="price-box" id="price_display" aria-live="polite">Total: $<%= f.return_receipt === '1' ? priceCertifiedRR : priceCertified %></div>
-  </fieldset>
-
-  <div class="active-security-msg">
-    <svg class="icon" aria-hidden="true"><use href="#icon-shield"/></svg>
-    Your connection is encrypted. Your data is protected.
-  </div>
-
-  <div class="secure-checkout-box">
-    <h3>
-      <svg class="icon" aria-hidden="true"><use href="#icon-shield"/></svg>
-      Secure Checkout
-    </h3>
-    <p>Your payment is processed by Stripe. We never store or see your credit card information.</p>
-    <span class="stripe-badge">
-      <svg class="icon" aria-hidden="true"><use href="#icon-stripe"/></svg>
-      Powered by Stripe
-    </span>
-  </div>
-
-  <div style="margin-top:.5rem">
-    <span class="usps-badge">
-      <svg class="icon" aria-hidden="true"><use href="#icon-eagle"/></svg>
-      Ships via United States Postal Service
-    </span>
-  </div>
-
-  <div class="what-happens-next">
-    <h3 class="what-happens-next-title">What Happens Next</h3>
-    <ol class="next-steps">
-      <li><strong>Pay securely</strong> via Stripe &mdash; we never see your card details</li>
-      <li><strong>We print, certify, and mail</strong> your letter through USPS</li>
-      <li><strong>Receive email confirmation</strong> with your USPS tracking number</li>
-      <li><strong>Track delivery &amp; download</strong> official USPS proof documents</li>
-    </ol>
-  </div>
-
-  <button type="submit">Pay &amp; Send Certified Mail</button>
-
+  <input type="hidden" name="sender_name" id="h_sender_name">
+  <input type="hidden" name="sender_street" id="h_sender_street">
+  <input type="hidden" name="sender_street2" id="h_sender_street2">
+  <input type="hidden" name="sender_city" id="h_sender_city">
+  <input type="hidden" name="sender_state" id="h_sender_state">
+  <input type="hidden" name="sender_zip" id="h_sender_zip">
+  <input type="hidden" name="customer_email" id="h_customer_email">
+  <input type="hidden" name="backup_email" id="h_backup_email">
+  <input type="hidden" name="recipient_name" id="h_recipient_name">
+  <input type="hidden" name="recipient_street" id="h_recipient_street">
+  <input type="hidden" name="recipient_street2" id="h_recipient_street2">
+  <input type="hidden" name="recipient_city" id="h_recipient_city">
+  <input type="hidden" name="recipient_state" id="h_recipient_state">
+  <input type="hidden" name="recipient_zip" id="h_recipient_zip">
+  <input type="hidden" name="letter_mode" id="h_letter_mode" value="text">
+  <textarea name="letter_text" id="h_letter_text" style="display:none"></textarea>
+  <input type="file" name="letter_pdf" id="h_letter_pdf" style="display:none">
+  <input type="hidden" name="return_receipt" id="h_return_receipt" value="0">
+  <input type="hidden" name="use_sender_as_billing" id="h_use_sender_billing" value="1">
 </form>
 
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+<script src="/wizard.js"></script>
 <script>
-function toggleMode(){
-  var t=document.getElementById('mode_text').checked;
-  document.getElementById('text_input').style.display=t?'':'none';
-  document.getElementById('pdf_input').style.display=t?'none':'';
-}
-function updatePrice(){
-  var rr=document.getElementById('return_receipt').checked;
-  document.getElementById('price_display').textContent=rr?'Total: $<%= priceCertifiedRR %>':'Total: $<%= priceCertified %>';
-}
+  window.PRICES = {
+    certified: '<%= priceCertified %>',
+    certifiedRR: '<%= priceCertifiedRR %>',
+    rrAddon: '<%= priceRRAddon %>'
+  };
 </script>
+
+</main>
 
 <%- include('partials/footer') %>

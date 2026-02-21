@@ -1,7 +1,36 @@
 const PDFDocument = require('pdfkit');
 
 /**
- * Generate a simple PDF letter from plain text.
+ * Strip HTML tags and decode basic entities, preserving line breaks.
+ * Handles Quill's output (bold/italic/underline/lists) by flattening to
+ * structured plain text suitable for PDFKit rendering.
+ */
+function htmlToPlainText(html) {
+  if (!html || !html.includes('<')) return html || '';
+
+  let text = html
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/p>/gi, '\n')
+    .replace(/<\/li>/gi, '\n')
+    .replace(/<li[^>]*>/gi, '  \u2022 ')
+    .replace(/<\/?(ol|ul)[^>]*>/gi, '\n')
+    .replace(/<[^>]+>/g, '');
+
+  text = text
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&mdash;/g, '\u2014')
+    .replace(/&ndash;/g, '\u2013');
+
+  return text.replace(/\n{3,}/g, '\n\n').trim();
+}
+
+/**
+ * Generate a PDF letter from text (plain or HTML from Quill).
  * Returns { buffer: Buffer, pageCount: number }.
  */
 function generateLetterPdf(text) {
@@ -21,7 +50,8 @@ function generateLetterPdf(text) {
     });
     doc.on('error', reject);
 
-    doc.fontSize(12).font('Helvetica').text(text, { lineGap: 4 });
+    const plainText = htmlToPlainText(text);
+    doc.fontSize(12).font('Helvetica').text(plainText, { lineGap: 4 });
     doc.flushPages();
     doc.end();
   });

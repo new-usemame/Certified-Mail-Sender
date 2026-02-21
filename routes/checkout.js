@@ -125,7 +125,22 @@ router.post('/', upload.single('letter_pdf'), csrfAfterMulter, async (req, res, 
       page_count: String(pageCount),
     };
 
-    const session = await createCheckoutSession({ metadata, returnReceipt });
+    const useSenderAsBilling = req.body.use_sender_as_billing === '1';
+
+    const sessionOpts = { metadata, returnReceipt };
+    if (useSenderAsBilling) {
+      sessionOpts.billingAddress = {
+        name: req.body.sender_name,
+        line1: req.body.sender_street,
+        line2: req.body.sender_street2 || undefined,
+        city: req.body.sender_city,
+        state: req.body.sender_state.toUpperCase(),
+        postal_code: req.body.sender_zip,
+        country: 'US',
+      };
+    }
+
+    const session = await createCheckoutSession(sessionOpts);
     res.redirect(303, session.url);
   } catch (e) {
     next(e);
