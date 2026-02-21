@@ -1696,6 +1696,7 @@ footer .footer-trust {
 
 .wizard-track {
   display: flex;
+  align-items: flex-start;
   transition: transform .4s cubic-bezier(.4, 0, .2, 1);
   will-change: transform;
 }
