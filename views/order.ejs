@@ -134,6 +134,7 @@
   <% if (!order.phone_number) { %>
   <div class="add-info-section">
     <form action="/order/<%= order.order_token %>/phone" method="POST" class="inline-form">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
       <label for="phone_number">Add Phone Number <span class="optional-tag">(optional)</span></label>
       <div class="inline-form-row">
         <input type="tel" id="phone_number" name="phone_number" placeholder="(555) 123-4567" pattern="[\d\s\-\(\)\+]+" required>

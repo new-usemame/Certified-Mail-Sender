@@ -30,10 +30,23 @@ function validate(body) {
   if (!/^[A-Z]{2}$/i.test(body.recipient_state)) return 'Recipient state must be a 2-letter code.';
   if (!/^\d{5}(-?\d{4})?$/.test(body.sender_zip)) return 'Invalid sender ZIP code.';
   if (!/^\d{5}(-?\d{4})?$/.test(body.recipient_zip)) return 'Invalid recipient ZIP code.';
+  if (body.letter_mode === 'text' && body.letter_text && body.letter_text.length > 50000) {
+    return 'Letter text is too long. Please keep it under 50,000 characters.';
+  }
   return null;
 }
 
-router.post('/', upload.single('letter_pdf'), async (req, res, next) => {
+const { doubleCsrfProtection } = require('../middleware/csrf');
+
+function csrfAfterMulter(req, res, next) {
+  doubleCsrfProtection(req, res, (err) => {
+    if (err) return next(err);
+    res.locals.csrfToken = req.csrfToken ? req.csrfToken() : '';
+    next();
+  });
+}
+
+router.post('/', upload.single('letter_pdf'), csrfAfterMulter, async (req, res, next) => {
   try {
     const err = validate(req.body);
     if (err) return res.render('index', { error: err });

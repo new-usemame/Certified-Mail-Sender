@@ -907,6 +907,42 @@ footer .footer-trust {
 
 /* --- Responsive --- */
 
+@media (max-width: 768px) {
+  .site-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: .25rem;
+  }
+
+  .site-nav a {
+    font-size: .75rem;
+    padding: .5rem .65rem;
+    margin: 0;
+  }
+
+  .footer-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: .15rem;
+  }
+
+  .footer-nav a {
+    padding: .45rem .55rem;
+    margin: 0;
+  }
+
+  .steps {
+    flex-direction: column;
+  }
+
+  .faq-item summary {
+    padding: .85rem 2.5rem .85rem 1rem;
+    min-height: 44px;
+  }
+}
+
 @media (max-width: 480px) {
   body { padding: 1rem .75rem; }
   .row { flex-direction: column; gap: 0; }
@@ -918,10 +954,84 @@ footer .footer-trust {
   .steps { flex-direction: column; }
   .site-nav a { font-size: .7rem; margin: 0 .3rem; }
   .order-details-grid { flex-direction: column; }
-  .timeline { overflow-x: auto; justify-content: flex-start; padding-bottom: .5rem; }
-  .timeline-label { font-size: .55rem; max-width: 55px; }
-  .timeline-dot { width: 30px; height: 30px; font-size: .65rem; }
-  .timeline-connector { min-width: 12px; margin-top: 15px; }
+
+  .timeline {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0 0 0 1rem;
+    overflow-x: visible;
+  }
+
+  .timeline-step {
+    flex-direction: row;
+    align-items: center;
+    gap: .75rem;
+  }
+
+  .timeline-dot {
+    width: 32px;
+    height: 32px;
+    font-size: .7rem;
+    flex-shrink: 0;
+  }
+
+  .timeline-label {
+    font-size: .7rem;
+    max-width: none;
+    text-align: left;
+  }
+
+  .timeline-connector {
+    width: 2px;
+    height: 20px;
+    min-width: 2px;
+    margin-top: 0;
+    margin-left: calc(1rem + 15px);
+  }
+
   .inline-form-row { flex-direction: column; }
   .inline-form-row button { width: 100%; }
+
+  .info-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .15rem;
+  }
+
+  .info-value {
+    text-align: left;
+  }
+
+  .pricing-table {
+    font-size: .85rem;
+  }
+
+  .pricing-table th,
+  .pricing-table td {
+    padding: .45rem .5rem;
+  }
+
+  .form-section {
+    padding: 1rem .75rem .5rem;
+  }
+
+  p.subtitle {
+    font-size: .85rem;
+  }
+
+  hr {
+    margin: 1.25rem 0;
+  }
+
+  .order-status-banner {
+    padding: 1.25rem .75rem;
+  }
+
+  .tracking-link-box {
+    padding: .75rem;
+  }
+
+  .magic-link {
+    font-size: .7rem;
+  }
 }

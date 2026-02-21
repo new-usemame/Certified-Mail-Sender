@@ -11,6 +11,7 @@
 <% } %>
 
 <form action="/checkout" method="POST" enctype="multipart/form-data">
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
 
   <fieldset class="form-section">
     <legend class="section-label">Sender</legend>

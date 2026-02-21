@@ -1,8 +1,25 @@
 const express = require('express');
+const rateLimit = require('express-rate-limit');
 const db = require('../db/init');
 const { getDocumentStatus } = require('../services/certifiedMail');
 
 const router = express.Router();
+
+const orderPageLimiter = rateLimit({
+  windowMs: 5 * 60 * 1000,
+  max: 20,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: 'Too many requests. Please try again in a few minutes.',
+});
+
+const phoneUpdateLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: 'Too many requests. Please try again later.',
+});
 
 const findOrderByToken = db.prepare('SELECT * FROM orders WHERE order_token = ?');
 const updateDeliveryStatus = db.prepare(`
@@ -74,7 +91,7 @@ async function refreshStatus(order) {
   return order;
 }
 
-router.get('/:token', async (req, res) => {
+router.get('/:token', orderPageLimiter, async (req, res) => {
   let order = findOrderByToken.get(req.params.token);
 
   if (!order) {
@@ -103,7 +120,7 @@ router.get('/:token', async (req, res) => {
   });
 });
 
-router.post('/:token/phone', (req, res) => {
+router.post('/:token/phone', phoneUpdateLimiter, (req, res) => {
   const order = findOrderByToken.get(req.params.token);
   if (!order) return res.status(404).send('Order not found');
 
