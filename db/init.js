@@ -13,4 +13,10 @@ db.exec(schema);
 const migrate001 = require('./migrate-001-tracking');
 migrate001.run(db);
 
+const migrate002 = require('./migrate-002-proofs');
+migrate002.run(db);
+
+const migrate003 = require('./migrate-003-pdf-storage');
+migrate003.run(db);
+
 module.exports = db;

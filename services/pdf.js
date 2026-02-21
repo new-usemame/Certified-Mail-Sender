@@ -27,4 +27,14 @@ function generateLetterPdf(text) {
   });
 }
 
-module.exports = { generateLetterPdf };
+/**
+ * Count pages in a PDF buffer by scanning for /Type /Page entries.
+ * Avoids pulling in a heavy dependency for a simple count.
+ */
+function countPdfPages(buffer) {
+  const str = buffer.toString('latin1');
+  const matches = str.match(/\/Type\s*\/Page(?!s)/g);
+  return matches ? matches.length : 1;
+}
+
+module.exports = { generateLetterPdf, countPdfPages };

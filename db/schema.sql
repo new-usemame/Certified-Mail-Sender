@@ -17,5 +17,11 @@ CREATE TABLE IF NOT EXISTS orders (
   delivery_status TEXT DEFAULT 'processing',
   delivery_status_detail TEXT,
   delivery_status_updated_at DATETIME,
+  acceptance_doc_available INTEGER DEFAULT 0,
+  delivery_doc_available INTEGER DEFAULT 0,
+  signature_doc_available INTEGER DEFAULT 0,
+  accepted_date DATETIME,
+  delivery_date DATETIME,
+  signature_name TEXT,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );

@@ -76,6 +76,13 @@ async function runAll() {
     if (!result.buffer || result.buffer.length < 100) throw new Error('PDF too small');
   }));
 
+  results.push(await runCheck('NODE_ENV', () => {
+    if (!process.env.NODE_ENV) throw new Error('not set (SCM will use test mode)');
+    if (process.env.NODE_ENV !== 'production') {
+      throw new Error(`set to "${process.env.NODE_ENV}" — SCM will use test mode`);
+    }
+  }));
+
   results.push(await runCheck('BASE_URL format', () => {
     const url = process.env.BASE_URL;
     if (!url) throw new Error('not set');

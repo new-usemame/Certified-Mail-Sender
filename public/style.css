@@ -1327,6 +1327,287 @@ footer .footer-trust {
   margin-bottom: 0;
 }
 
+/* --- What's Included section (conversion page) --- */
+
+.whats-included {
+  border: 2px solid var(--navy);
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  background: var(--field-bg);
+}
+
+.whats-included-title {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  font-family: var(--font-retro);
+  font-size: .9rem;
+  font-weight: 700;
+  color: var(--navy);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  margin-bottom: 1rem;
+}
+
+.whats-included-title .icon {
+  width: 1.1rem;
+  height: 1.1rem;
+  color: var(--green);
+}
+
+.included-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.included-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: .65rem;
+  padding: .6rem 0;
+  border-bottom: 1px solid #e0ddd8;
+}
+
+.included-list li:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.included-list li > .icon {
+  width: 1.1rem;
+  height: 1.1rem;
+  color: var(--navy);
+  flex-shrink: 0;
+  margin-top: .15rem;
+}
+
+.included-list li strong {
+  display: block;
+  font-size: .9rem;
+  color: var(--charcoal);
+  margin-bottom: .1rem;
+}
+
+.included-list li span {
+  font-size: .8rem;
+  color: var(--warm-gray);
+  line-height: 1.4;
+}
+
+/* --- Option description (below checkbox) --- */
+
+.option-desc {
+  margin: .35rem 0 0 calc(20px + .5rem);
+  font-size: .78rem;
+  color: var(--warm-gray);
+  line-height: 1.45;
+}
+
+/* --- What Happens Next section --- */
+
+.what-happens-next {
+  border: 2px dashed var(--navy);
+  padding: 1rem 1.25rem;
+  margin-top: 1.25rem;
+}
+
+.what-happens-next-title {
+  font-family: var(--font-retro);
+  font-size: .8rem;
+  font-weight: 700;
+  color: var(--navy);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-bottom: .75rem;
+}
+
+.next-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: step;
+}
+
+.next-steps li {
+  counter-increment: step;
+  display: flex;
+  align-items: baseline;
+  gap: .5rem;
+  font-size: .85rem;
+  color: var(--charcoal);
+  padding: .3rem 0;
+  line-height: 1.5;
+}
+
+.next-steps li::before {
+  content: counter(step);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: 1.5px solid var(--navy);
+  border-radius: 50%;
+  font-family: var(--font-retro);
+  font-size: .7rem;
+  font-weight: 700;
+  color: var(--navy);
+  flex-shrink: 0;
+}
+
+/* --- Proof Documents section (tracking page) --- */
+
+.proof-docs-section {
+  border: 2px solid var(--navy);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+  background: var(--field-bg);
+}
+
+.proof-docs-title {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  font-family: var(--font-retro);
+  font-size: .85rem;
+  font-weight: 700;
+  color: var(--navy);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  margin-bottom: .35rem;
+}
+
+.proof-docs-title .icon {
+  width: 1.1rem;
+  height: 1.1rem;
+  color: var(--green);
+}
+
+.proof-docs-desc {
+  font-size: .8rem;
+  color: var(--warm-gray);
+  margin-bottom: 1rem;
+  line-height: 1.4;
+}
+
+.proof-doc-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: .65rem 0;
+  border-bottom: 1px solid #e0ddd8;
+  gap: .75rem;
+}
+
+.proof-doc-row:last-of-type {
+  border-bottom: none;
+}
+
+.proof-doc-info strong {
+  display: block;
+  font-size: .85rem;
+  color: var(--charcoal);
+}
+
+.proof-doc-info span {
+  font-size: .75rem;
+  color: var(--warm-gray);
+  line-height: 1.3;
+}
+
+.proof-doc-link {
+  display: inline-flex;
+  align-items: center;
+  gap: .25rem;
+  padding: .35rem .75rem;
+  background: var(--green);
+  color: #fff;
+  font-family: var(--font-retro);
+  font-size: .7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background .15s;
+}
+
+.proof-doc-link:hover {
+  background: #245a3f;
+  color: #fff;
+}
+
+.proof-doc-link .icon {
+  width: .8rem;
+  height: .8rem;
+}
+
+.proof-doc-pending {
+  font-family: var(--font-retro);
+  font-size: .65rem;
+  color: var(--warm-gray);
+  font-style: italic;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.proof-doc-meta {
+  font-size: .78rem;
+  color: var(--warm-gray);
+  margin-top: .5rem;
+  padding-top: .5rem;
+  border-top: 1px solid #e0ddd8;
+}
+
+/* --- What To Expect box (success page) --- */
+
+.what-to-expect-box {
+  border: 2px dashed var(--navy);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.what-to-expect-title {
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+  font-family: var(--font-retro);
+  font-size: .8rem;
+  font-weight: 700;
+  color: var(--navy);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  margin-bottom: .75rem;
+}
+
+.what-to-expect-title .icon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.expect-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.expect-list li {
+  position: relative;
+  padding: .3rem 0 .3rem 1.25rem;
+  font-size: .85rem;
+  color: var(--charcoal);
+  line-height: 1.5;
+}
+
+.expect-list li::before {
+  content: "\2713";
+  position: absolute;
+  left: 0;
+  color: var(--green);
+  font-weight: 700;
+}
+
 /* --- Active security message --- */
 
 .active-security-msg {
@@ -1507,5 +1788,28 @@ footer .footer-trust {
 
   .magic-link {
     font-size: .7rem;
+  }
+
+  .whats-included {
+    padding: 1rem .75rem;
+  }
+
+  .proof-doc-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .35rem;
+  }
+
+  .proof-doc-pending {
+    white-space: normal;
+    text-align: left;
+  }
+
+  .what-happens-next {
+    padding: .75rem 1rem;
+  }
+
+  .what-to-expect-box {
+    padding: .75rem 1rem;
   }
 }

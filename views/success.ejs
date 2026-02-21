@@ -3,26 +3,60 @@
 <main id="main">
 
 <% if (typeof pending !== 'undefined' && pending) { %>
-  <meta http-equiv="refresh" content="3">
-  <div class="order-status-banner processing">
+  <div class="order-status-banner processing" id="pending-banner">
     <div class="status-icon spinning"><svg class="icon" style="width:2.5rem;height:2.5rem" aria-hidden="true"><use href="#icon-mail"/></svg></div>
     <h2>Processing Your Order&hellip;</h2>
     <p>Your payment was received. We're setting up your certified letter now. This page will update automatically.</p>
   </div>
+  <div class="order-status-banner info" id="timeout-banner" style="display:none">
+    <div class="status-icon"><svg class="icon" style="width:2.5rem;height:2.5rem" aria-hidden="true"><use href="#icon-check-circle"/></svg></div>
+    <h2>Payment Received</h2>
+    <p>Your order is being processed. You will receive an email with your tracking number and order details shortly. You can close this page.</p>
+  </div>
+  <script>
+  (function(){
+    var attempts=0, maxAttempts=20, delay=3000;
+    function poll(){
+      if(attempts>=maxAttempts){
+        document.getElementById('pending-banner').style.display='none';
+        document.getElementById('timeout-banner').style.display='';
+        return;
+      }
+      attempts++;
+      setTimeout(function(){ window.location.reload(); }, delay);
+      if(attempts>5) delay=5000;
+    }
+    poll();
+  })();
+  </script>
 
 <% } else if (!order) { %>
   <div class="order-status-banner success">
     <div class="status-icon"><svg class="icon" style="width:2.5rem;height:2.5rem" aria-hidden="true"><use href="#icon-check-circle"/></svg></div>
     <h2>Payment Received</h2>
-    <p>Your certified letter is being processed. You will receive an email with your tracking number and delivery details shortly.</p>
-    <p style="margin-top:1rem"><a href="/">Send another letter</a></p>
+    <p>Your certified letter is being processed. You will receive an email with your USPS tracking number and delivery details shortly.</p>
   </div>
+
+  <div class="what-to-expect-box">
+    <h3 class="what-to-expect-title">
+      <svg class="icon" aria-hidden="true"><use href="#icon-envelope-check"/></svg>
+      What To Expect
+    </h3>
+    <ul class="expect-list">
+      <li>Check your email for your tracking number and order confirmation</li>
+      <li>Your Proof of Acceptance PDF will be available within hours of USPS acceptance</li>
+      <li>Track your letter anytime on USPS.com or your tracking page</li>
+      <li>All official documents stored for 10 years</li>
+    </ul>
+  </div>
+
+  <div style="margin-top:1rem;text-align:center"><a href="/">Send another letter</a></div>
 
 <% } else { %>
   <div class="order-status-banner success">
     <div class="status-icon"><svg class="icon" style="width:2.5rem;height:2.5rem" aria-hidden="true"><use href="#icon-check-circle"/></svg></div>
     <h2>Order Confirmed</h2>
-    <p>Your certified letter has been submitted and is being processed by USPS.</p>
+    <p>Your certified letter has been submitted to USPS. An email with your tracking number has been sent to <strong><%= order.customer_email %></strong>.</p>
   </div>
 
   <div class="verified-transaction">
@@ -102,11 +136,25 @@
     </div>
   </div>
 
+  <div class="what-to-expect-box">
+    <h3 class="what-to-expect-title">
+      <svg class="icon" aria-hidden="true"><use href="#icon-envelope-check"/></svg>
+      What To Expect
+    </h3>
+    <ul class="expect-list">
+      <li>Your Proof of Acceptance PDF will be available within hours of USPS acceptance</li>
+      <li>Your Proof of Delivery PDF will be available within hours of delivery</li>
+      <% if (order.return_receipt) { %><li>Your Return Receipt (signed by recipient) will be available within 24 hours of delivery</li><% } %>
+      <li>Track your letter anytime on USPS.com or from the link below</li>
+      <li>All official documents stored for 10 years and downloadable from your tracking page</li>
+    </ul>
+  </div>
+
   <% if (order.order_token) { %>
   <div class="tracking-link-box">
-    <p><strong>Bookmark this link to track your letter anytime:</strong></p>
+    <p><strong>Bookmark this link to track your letter and download official documents:</strong></p>
     <a href="/order/<%= order.order_token %>" class="magic-link">/order/<%= order.order_token %></a>
-    <p class="text-muted" style="margin-top:.5rem;font-size:.85rem">A tracking link has also been sent to <strong><%= order.customer_email %></strong></p>
+    <p class="text-muted" style="margin-top:.5rem;font-size:.85rem">This link has also been sent to <strong><%= order.customer_email %></strong></p>
   </div>
   <% } %>
 

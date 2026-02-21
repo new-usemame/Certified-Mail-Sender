@@ -1,0 +1,15 @@
+<%- include('partials/header', { title: 'Something Went Wrong | Certified Mail Sender' }) %>
+
+<main id="main">
+
+<div class="order-status-banner error">
+  <div class="status-icon"><svg class="icon" style="width:2.5rem;height:2.5rem" aria-hidden="true"><use href="#icon-x-circle"/></svg></div>
+  <h2>Something Went Wrong</h2>
+  <p>We're sorry, but something unexpected happened. Please try again or contact us if the problem persists.</p>
+  <div style="margin-top:1.5rem;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+    <a href="/" class="cta-button">Return Home</a>
+    <a href="/contact" class="cta-button" style="background:#706A65">Contact Us</a>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

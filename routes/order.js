@@ -1,7 +1,7 @@
 const express = require('express');
 const rateLimit = require('express-rate-limit');
 const db = require('../db/init');
-const { getDocumentStatus } = require('../services/certifiedMail');
+const { getDocumentStatus, parseProofAvailability, getProofDocument } = require('../services/certifiedMail');
 
 const router = express.Router();
 
@@ -11,6 +11,14 @@ const orderPageLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   message: 'Too many requests. Please try again in a few minutes.',
+});
+
+const proofDownloadLimiter = rateLimit({
+  windowMs: 5 * 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: 'Too many download requests. Please try again in a few minutes.',
 });
 
 const phoneUpdateLimiter = rateLimit({
@@ -25,6 +33,16 @@ const findOrderByToken = db.prepare('SELECT * FROM orders WHERE order_token = ?'
 const updateDeliveryStatus = db.prepare(`
   UPDATE orders SET delivery_status = ?, delivery_status_detail = ?,
   delivery_status_updated_at = datetime('now') WHERE order_token = ?
+`);
+const updateProofAvailability = db.prepare(`
+  UPDATE orders SET
+    acceptance_doc_available = ?,
+    delivery_doc_available = ?,
+    signature_doc_available = ?,
+    accepted_date = ?,
+    delivery_date = ?,
+    signature_name = ?
+  WHERE order_token = ?
 `);
 const updatePhone = db.prepare('UPDATE orders SET phone_number = ? WHERE order_token = ?');
 
@@ -62,18 +80,22 @@ function getStepIndex(status) {
 
 async function refreshStatus(order) {
   if (!order.scm_queue_id) return order;
-  if (order.delivery_status === 'delivered' || order.delivery_status === 'returned') return order;
+
+  const isTerminal = order.delivery_status === 'delivered' || order.delivery_status === 'returned';
 
   const lastUpdated = order.delivery_status_updated_at
     ? new Date(order.delivery_status_updated_at).getTime()
     : 0;
   const staleMs = STATUS_CACHE_MINUTES * 60 * 1000;
 
-  if (Date.now() - lastUpdated < staleMs) return order;
+  const proofsMissing = !order.acceptance_doc_available && !order.delivery_doc_available;
+  const shouldRefresh = (Date.now() - lastUpdated >= staleMs) && (!isTerminal || proofsMissing);
+
+  if (!shouldRefresh) return order;
 
   try {
     const result = await getDocumentStatus(order.scm_queue_id);
-    const mapped = mapScmStatus(result.Status || result.StatusMessage);
+    const mapped = mapScmStatus(result.TrackingStatus || result.Status || result.StatusMessage);
     if (mapped && mapped !== order.delivery_status) {
       const detail = result.StatusMessage || result.Status || '';
       updateDeliveryStatus.run(mapped, detail, order.order_token);
@@ -84,6 +106,23 @@ async function refreshStatus(order) {
       updateDeliveryStatus.run(order.delivery_status, order.delivery_status_detail || '', order.order_token);
       order.delivery_status_updated_at = new Date().toISOString();
     }
+
+    const proofs = parseProofAvailability(result);
+    updateProofAvailability.run(
+      proofs.acceptanceDocAvailable,
+      proofs.deliveryDocAvailable,
+      proofs.signatureDocAvailable,
+      proofs.acceptedDate,
+      proofs.deliveryDate,
+      proofs.signatureName,
+      order.order_token,
+    );
+    order.acceptance_doc_available = proofs.acceptanceDocAvailable;
+    order.delivery_doc_available = proofs.deliveryDocAvailable;
+    order.signature_doc_available = proofs.signatureDocAvailable;
+    order.accepted_date = proofs.acceptedDate;
+    order.delivery_date = proofs.deliveryDate;
+    order.signature_name = proofs.signatureName;
   } catch (err) {
     console.error('Failed to refresh delivery status:', err.message);
   }
@@ -118,6 +157,41 @@ router.get('/:token', orderPageLimiter, async (req, res) => {
     googleMapsKey: process.env.GOOGLE_MAPS_API_KEY || '',
     phoneSaved: req.query.phone === 'saved',
   });
+});
+
+router.get('/:token/proof/:type', proofDownloadLimiter, async (req, res) => {
+  const { token, type } = req.params;
+  const validTypes = ['acceptance', 'delivery', 'signature'];
+  if (!validTypes.includes(type)) {
+    return res.status(400).send('Invalid proof type.');
+  }
+
+  const order = findOrderByToken.get(token);
+  if (!order) return res.status(404).send('Order not found.');
+  if (!order.scm_queue_id) {
+    return res.status(404).send('This order has not been submitted for mailing yet.');
+  }
+
+  try {
+    const result = await getProofDocument(order.scm_queue_id, type);
+    if (!result) {
+      const messages = {
+        acceptance: 'Proof of Acceptance is not yet available. It will be posted within hours of USPS acceptance.',
+        delivery: 'Proof of Delivery is not yet available. It will be posted within hours of delivery.',
+        signature: 'Return Receipt is not yet available. It will be posted within 24 hours of delivery.',
+      };
+      return res.status(404).send(messages[type]);
+    }
+
+    const pdfBuffer = Buffer.from(result.base64, 'base64');
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename="${result.filename}"`);
+    res.setHeader('Content-Length', pdfBuffer.length);
+    res.send(pdfBuffer);
+  } catch (err) {
+    console.error('Proof document download error:', err.message);
+    res.status(500).send('Failed to retrieve document. Please try again later.');
+  }
 });
 
 router.post('/:token/phone', phoneUpdateLimiter, (req, res) => {

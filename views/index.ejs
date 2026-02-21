@@ -24,10 +24,55 @@
 
 <div class="no-signup-stamp">No Signup Required</div>
 
+<div class="whats-included">
+  <h3 class="whats-included-title">
+    <svg class="icon" aria-hidden="true"><use href="#icon-check-circle"/></svg>
+    What You'll Receive
+  </h3>
+  <ul class="included-list">
+    <li>
+      <svg class="icon" aria-hidden="true"><use href="#icon-envelope-check"/></svg>
+      <div>
+        <strong>Email Confirmation</strong>
+        <span>Tracking number and order link sent to your inbox immediately</span>
+      </div>
+    </li>
+    <li>
+      <svg class="icon" aria-hidden="true"><use href="#icon-eagle"/></svg>
+      <div>
+        <strong>Official USPS Tracking</strong>
+        <span>Real-time tracking on USPS.com with your unique tracking number</span>
+      </div>
+    </li>
+    <li>
+      <svg class="icon" aria-hidden="true"><use href="#icon-shield"/></svg>
+      <div>
+        <strong>Proof of Acceptance</strong>
+        <span>Official PDF proof your letter was accepted by USPS &mdash; IRS-accepted for timely filing (Title 26, Sec. 7502)</span>
+      </div>
+    </li>
+    <li>
+      <svg class="icon" aria-hidden="true"><use href="#icon-check-circle"/></svg>
+      <div>
+        <strong>Proof of Delivery</strong>
+        <span>Official PDF proof your letter was delivered, posted within hours</span>
+      </div>
+    </li>
+    <li>
+      <svg class="icon" aria-hidden="true"><use href="#icon-lock"/></svg>
+      <div>
+        <strong>10-Year Record Retention</strong>
+        <span>All documents stored securely for 10 years and downloadable anytime</span>
+      </div>
+    </li>
+  </ul>
+</div>
+
 <% if (typeof error !== 'undefined' && error) { %>
   <div class="msg error" role="alert"><%= error %></div>
 <% } %>
 
+<% var f = (typeof form !== 'undefined' && form) ? form : {}; %>
 <form action="/checkout" method="POST" enctype="multipart/form-data">
   <input type="hidden" name="_csrf" value="<%= csrfToken %>">
 
@@ -36,28 +81,31 @@
     <span class="encrypted-label"><svg class="icon" aria-hidden="true"><use href="#icon-lock"/></svg> Encrypted</span>
 
     <label for="sender_name">Full Name</label>
-    <input type="text" id="sender_name" name="sender_name" autocomplete="name" required>
+    <input type="text" id="sender_name" name="sender_name" autocomplete="name" maxlength="200" value="<%= f.sender_name || '' %>" required>
 
     <label for="sender_street">Street Address</label>
-    <input type="text" id="sender_street" name="sender_street" autocomplete="address-line1" required>
+    <input type="text" id="sender_street" name="sender_street" autocomplete="address-line1" maxlength="200" value="<%= f.sender_street || '' %>" required>
+
+    <label for="sender_street2">Apt / Suite / Unit <span class="optional-tag">(optional)</span></label>
+    <input type="text" id="sender_street2" name="sender_street2" autocomplete="address-line2" maxlength="200" value="<%= f.sender_street2 || '' %>">
 
     <div class="row">
       <div>
         <label for="sender_city">City</label>
-        <input type="text" id="sender_city" name="sender_city" autocomplete="address-level2" required>
+        <input type="text" id="sender_city" name="sender_city" autocomplete="address-level2" maxlength="100" value="<%= f.sender_city || '' %>" required>
       </div>
       <div>
         <label for="sender_state">State</label>
-        <input type="text" id="sender_state" name="sender_state" autocomplete="address-level1" maxlength="2" required>
+        <input type="text" id="sender_state" name="sender_state" autocomplete="address-level1" maxlength="2" value="<%= f.sender_state || '' %>" required>
       </div>
       <div>
         <label for="sender_zip">ZIP</label>
-        <input type="text" id="sender_zip" name="sender_zip" autocomplete="postal-code" maxlength="10" required>
+        <input type="text" id="sender_zip" name="sender_zip" autocomplete="postal-code" maxlength="10" value="<%= f.sender_zip || '' %>" required>
       </div>
     </div>
 
     <label for="customer_email">Your Email (for tracking info)</label>
-    <input type="email" id="customer_email" name="customer_email" autocomplete="email" required>
+    <input type="email" id="customer_email" name="customer_email" autocomplete="email" maxlength="254" value="<%= f.customer_email || '' %>" required>
   </fieldset>
 
   <fieldset class="form-section">
@@ -65,23 +113,26 @@
     <span class="encrypted-label"><svg class="icon" aria-hidden="true"><use href="#icon-lock"/></svg> Encrypted</span>
 
     <label for="recipient_name">Full Name</label>
-    <input type="text" id="recipient_name" name="recipient_name" required>
+    <input type="text" id="recipient_name" name="recipient_name" maxlength="200" value="<%= f.recipient_name || '' %>" required>
 
     <label for="recipient_street">Street Address</label>
-    <input type="text" id="recipient_street" name="recipient_street" required>
+    <input type="text" id="recipient_street" name="recipient_street" maxlength="200" value="<%= f.recipient_street || '' %>" required>
+
+    <label for="recipient_street2">Apt / Suite / Unit <span class="optional-tag">(optional)</span></label>
+    <input type="text" id="recipient_street2" name="recipient_street2" maxlength="200" value="<%= f.recipient_street2 || '' %>">
 
     <div class="row">
       <div>
         <label for="recipient_city">City</label>
-        <input type="text" id="recipient_city" name="recipient_city" required>
+        <input type="text" id="recipient_city" name="recipient_city" maxlength="100" value="<%= f.recipient_city || '' %>" required>
       </div>
       <div>
         <label for="recipient_state">State</label>
-        <input type="text" id="recipient_state" name="recipient_state" maxlength="2" required>
+        <input type="text" id="recipient_state" name="recipient_state" maxlength="2" value="<%= f.recipient_state || '' %>" required>
       </div>
       <div>
         <label for="recipient_zip">ZIP</label>
-        <input type="text" id="recipient_zip" name="recipient_zip" maxlength="10" required>
+        <input type="text" id="recipient_zip" name="recipient_zip" maxlength="10" value="<%= f.recipient_zip || '' %>" required>
       </div>
     </div>
   </fieldset>
@@ -92,21 +143,21 @@
 
     <div class="radio-group">
       <div>
-        <input type="radio" id="mode_text" name="letter_mode" value="text" checked onchange="toggleMode()">
+        <input type="radio" id="mode_text" name="letter_mode" value="text" <%= f.letter_mode === 'pdf' ? '' : 'checked' %> onchange="toggleMode()">
         <label for="mode_text">Type / paste text</label>
       </div>
       <div>
-        <input type="radio" id="mode_pdf" name="letter_mode" value="pdf" onchange="toggleMode()">
+        <input type="radio" id="mode_pdf" name="letter_mode" value="pdf" <%= f.letter_mode === 'pdf' ? 'checked' : '' %> onchange="toggleMode()">
         <label for="mode_pdf">Upload PDF</label>
       </div>
     </div>
 
-    <div id="text_input">
+    <div id="text_input" <%= f.letter_mode === 'pdf' ? 'style="display:none"' : '' %>>
       <label for="letter_text">Letter Text</label>
-      <textarea id="letter_text" name="letter_text" placeholder="Type or paste your letter here..."></textarea>
+      <textarea id="letter_text" name="letter_text" placeholder="Type or paste your letter here..."><%= f.letter_text || '' %></textarea>
     </div>
 
-    <div id="pdf_input" style="display:none">
+    <div id="pdf_input" <%= f.letter_mode === 'pdf' ? '' : 'style="display:none"' %>>
       <label for="letter_pdf">Upload PDF</label>
       <input type="file" id="letter_pdf" name="letter_pdf" accept="application/pdf">
     </div>
@@ -116,11 +167,12 @@
     <legend class="section-label">Options</legend>
 
     <div class="checkbox-row">
-      <input type="checkbox" id="return_receipt" name="return_receipt" value="1" onchange="updatePrice()">
-      <label for="return_receipt">Add Electronic Return Receipt (+$3.00)</label>
+      <input type="checkbox" id="return_receipt" name="return_receipt" value="1" <%= f.return_receipt === '1' ? 'checked' : '' %> onchange="updatePrice()">
+      <label for="return_receipt">Add Electronic Return Receipt (+$<%= priceRRAddon %>)</label>
     </div>
+    <p class="option-desc">Recipient signs upon delivery. Replaces the traditional USPS Green Card (PS3811) with the same legal standing &mdash; delivered as a downloadable PDF within 24 hours.</p>
 
-    <div class="price-box" id="price_display" aria-live="polite">Total: $10.00</div>
+    <div class="price-box" id="price_display" aria-live="polite">Total: $<%= f.return_receipt === '1' ? priceCertifiedRR : priceCertified %></div>
   </fieldset>
 
   <div class="active-security-msg">
@@ -147,6 +199,16 @@
     </span>
   </div>
 
+  <div class="what-happens-next">
+    <h3 class="what-happens-next-title">What Happens Next</h3>
+    <ol class="next-steps">
+      <li><strong>Pay securely</strong> via Stripe &mdash; we never see your card details</li>
+      <li><strong>We print, certify, and mail</strong> your letter through USPS</li>
+      <li><strong>Receive email confirmation</strong> with your USPS tracking number</li>
+      <li><strong>Track delivery &amp; download</strong> official USPS proof documents</li>
+    </ol>
+  </div>
+
   <button type="submit">Pay &amp; Send Certified Mail</button>
 
 </form>
@@ -159,7 +221,7 @@ function toggleMode(){
 }
 function updatePrice(){
   var rr=document.getElementById('return_receipt').checked;
-  document.getElementById('price_display').textContent=rr?'Total: $13.00':'Total: $10.00';
+  document.getElementById('price_display').textContent=rr?'Total: $<%= priceCertifiedRR %>':'Total: $<%= priceCertified %>';
 }
 </script>
 

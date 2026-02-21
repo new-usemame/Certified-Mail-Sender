@@ -40,12 +40,14 @@ async function getAccessToken() {
 async function queuePrintItem({
   senderName,
   senderStreet,
+  senderStreet2,
   senderCity,
   senderState,
   senderZip,
   senderEmail,
   recipientName,
   recipientStreet,
+  recipientStreet2,
   recipientCity,
   recipientState,
   recipientZip,
@@ -62,6 +64,7 @@ async function queuePrintItem({
     TemplateName: reference || 'CertifiedMailSender',
     FromName: senderName,
     FromAddress1: senderStreet,
+    FromAddress2: senderStreet2 || '',
     FromCity: senderCity,
     FromState: senderState,
     FromZip: senderZip.substring(0, 5),
@@ -69,6 +72,7 @@ async function queuePrintItem({
     FromEmail: senderEmail || '',
     ToName: recipientName,
     ToAddress1: recipientStreet,
+    ToAddress2: recipientStreet2 || '',
     ToCity: recipientCity,
     ToState: recipientState,
     ToZip: recipientZip.substring(0, 5),
@@ -106,6 +110,7 @@ async function queuePrintItem({
 
 /**
  * Get tracking status for a document by its QueueID.
+ * Returns the full SCM response including proof document fields.
  */
 async function getDocumentStatus(queueId) {
   const token = await getAccessToken();
@@ -130,4 +135,49 @@ async function getDocumentStatus(queueId) {
   return res.json();
 }
 
-module.exports = { queuePrintItem, getDocumentStatus };
+/**
+ * Extract proof document availability metadata from an SCM status response.
+ */
+function parseProofAvailability(scmData) {
+  return {
+    acceptanceDocAvailable: scmData.AcceptanceDoc ? 1 : 0,
+    deliveryDocAvailable: scmData.DeliveryDoc ? 1 : 0,
+    signatureDocAvailable: scmData.SignatureDoc ? 1 : 0,
+    acceptedDate: scmData.AcceptedDate || null,
+    deliveryDate: scmData.DeliveryDate || null,
+    signatureName: scmData.SignatureName || null,
+  };
+}
+
+const PROOF_TYPE_FIELDS = {
+  acceptance: 'AcceptanceDoc',
+  delivery: 'DeliveryDoc',
+  signature: 'SignatureDoc',
+};
+
+/**
+ * Fetch a specific proof document PDF (base64) from SCM.
+ * Returns { base64, filename } or null if not yet available.
+ */
+async function getProofDocument(queueId, proofType) {
+  const field = PROOF_TYPE_FIELDS[proofType];
+  if (!field) throw new Error(`Invalid proof type: ${proofType}`);
+
+  const data = await getDocumentStatus(queueId);
+  const base64 = data[field];
+
+  if (!base64) return null;
+
+  const names = {
+    acceptance: 'Proof-of-Acceptance',
+    delivery: 'Proof-of-Delivery',
+    signature: 'Return-Receipt',
+  };
+
+  return {
+    base64,
+    filename: `${names[proofType]}-${queueId}.pdf`,
+  };
+}
+
+module.exports = { queuePrintItem, getDocumentStatus, parseProofAvailability, getProofDocument };

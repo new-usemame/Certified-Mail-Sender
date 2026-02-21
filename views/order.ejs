@@ -155,6 +155,69 @@
     <% } %>
   </div>
 
+  <div class="proof-docs-section">
+    <h3 class="proof-docs-title">
+      <svg class="icon" aria-hidden="true"><use href="#icon-shield"/></svg>
+      Your Official Documents
+    </h3>
+    <p class="proof-docs-desc">Official USPS proof documents are stored for 10 years and downloadable anytime.</p>
+
+    <div class="proof-doc-row">
+      <div class="proof-doc-info">
+        <strong>Proof of Acceptance</strong>
+        <span>Official record that USPS accepted your letter</span>
+      </div>
+      <% if (order.acceptance_doc_available) { %>
+        <a href="/order/<%= order.order_token %>/proof/acceptance" class="proof-doc-link">
+          <svg class="icon" aria-hidden="true"><use href="#icon-check-circle"/></svg> Download PDF
+        </a>
+      <% } else { %>
+        <span class="proof-doc-pending">Available within hours of acceptance</span>
+      <% } %>
+    </div>
+
+    <div class="proof-doc-row">
+      <div class="proof-doc-info">
+        <strong>Proof of Delivery</strong>
+        <span>Official record that your letter was delivered</span>
+      </div>
+      <% if (order.delivery_doc_available) { %>
+        <a href="/order/<%= order.order_token %>/proof/delivery" class="proof-doc-link">
+          <svg class="icon" aria-hidden="true"><use href="#icon-check-circle"/></svg> Download PDF
+        </a>
+      <% } else { %>
+        <span class="proof-doc-pending">Available within hours of delivery</span>
+      <% } %>
+    </div>
+
+    <% if (order.return_receipt) { %>
+    <div class="proof-doc-row">
+      <div class="proof-doc-info">
+        <strong>Return Receipt</strong>
+        <span>Signed by recipient upon delivery<%= order.signature_name ? ' (' + order.signature_name + ')' : '' %></span>
+      </div>
+      <% if (order.signature_doc_available) { %>
+        <a href="/order/<%= order.order_token %>/proof/signature" class="proof-doc-link">
+          <svg class="icon" aria-hidden="true"><use href="#icon-check-circle"/></svg> Download PDF
+        </a>
+      <% } else { %>
+        <span class="proof-doc-pending">Available within 24 hours of delivery</span>
+      <% } %>
+    </div>
+    <% } %>
+
+    <% if (order.accepted_date) { %>
+    <div class="proof-doc-meta">
+      Accepted by USPS: <%= new Date(order.accepted_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %>
+    </div>
+    <% } %>
+    <% if (order.delivery_date) { %>
+    <div class="proof-doc-meta">
+      Delivered: <%= new Date(order.delivery_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %>
+    </div>
+    <% } %>
+  </div>
+
   <% if (!order.phone_number) { %>
   <div class="add-info-section">
     <form action="/order/<%= order.order_token %>/phone" method="POST" class="inline-form">
