@@ -32,6 +32,10 @@ app.use('/checkout', require('./routes/checkout'));
 app.use('/success', require('./routes/success'));
 app.use('/cancel', require('./routes/cancel'));
 
+if (process.env.ENABLE_STATUS_PAGE === 'true') {
+  app.use('/status', require('./routes/status'));
+}
+
 app.use((err, _req, res, _next) => {
   console.error(err.stack);
   res.status(500).send('Something went wrong. Please try again.');

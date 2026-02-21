@@ -1,0 +1,58 @@
+<%- include('partials/header', { title: 'System Status' }) %>
+
+<style>
+  .status-banner {
+    padding: .75rem 1rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+  .status-banner.pass { background: #e6f4ea; color: #1a7f37; border: 1px solid #a3d9a5; }
+  .status-banner.fail { background: #ffeef0; color: #c00; border: 1px solid #f5a3a3; }
+  .check-list { list-style: none; padding: 0; }
+  .check-item {
+    display: flex;
+    align-items: baseline;
+    gap: .75rem;
+    padding: .5rem 0;
+    border-bottom: 1px solid #eee;
+  }
+  .check-indicator { font-size: 1.1rem; flex-shrink: 0; }
+  .check-indicator.pass { color: #1a7f37; }
+  .check-indicator.fail { color: #c00; }
+  .check-name { flex: 1; }
+  .check-ms { color: #888; font-size: .85rem; white-space: nowrap; }
+  .check-error { color: #c00; font-size: .85rem; margin-top: .2rem; }
+  .status-timestamp { margin-top: 1.5rem; color: #888; font-size: .85rem; }
+</style>
+
+<h1>System Status</h1>
+
+<div class="status-banner <%= summary.allPassed ? 'pass' : 'fail' %>">
+  <% if (summary.allPassed) { %>
+    All checks passed (<%= summary.total %>/<%= summary.total %>)
+  <% } else { %>
+    <%= summary.failed %> of <%= summary.total %> checks failed
+  <% } %>
+</div>
+
+<ul class="check-list">
+  <% for (const r of results) { %>
+    <li>
+      <div class="check-item">
+        <span class="check-indicator <%= r.status %>">
+          <%= r.status === 'pass' ? '\u25CF' : '\u25CF' %>
+        </span>
+        <span class="check-name"><%= r.name %></span>
+        <span class="check-ms"><%= r.durationMs %> ms</span>
+      </div>
+      <% if (r.error) { %>
+        <div class="check-error"><%= r.error %></div>
+      <% } %>
+    </li>
+  <% } %>
+</ul>
+
+<p class="status-timestamp">Checked at: <%= summary.timestamp %></p>
+
+<%- include('partials/footer') %>
