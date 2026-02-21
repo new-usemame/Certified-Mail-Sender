@@ -3,10 +3,10 @@
 :root {
   --navy: #1B2A4A;
   --red: #B33A3A;
-  --cream: #F3E5C7;
+  --cream: #FAFAF7;
   --charcoal: #2C2C2C;
   --warm-gray: #8B8680;
-  --field-bg: #FAF6EE;
+  --field-bg: #FFFFFF;
   --font-retro: "Courier Prime", "Courier New", Courier, monospace;
   --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
 }
@@ -347,6 +347,245 @@ footer .footer-trust {
   font-size: .75rem;
 }
 
+/* --- Site navigation --- */
+
+.site-nav {
+  text-align: center;
+  margin-top: 1rem;
+  padding-top: .75rem;
+}
+
+.site-nav a {
+  font-family: var(--font-retro);
+  font-size: .7rem;
+  font-weight: 700;
+  color: var(--navy);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  text-decoration: none;
+  padding: .25rem 0;
+  margin: 0 .5rem;
+  border-bottom: 2px solid transparent;
+  transition: border-color .15s, color .15s;
+}
+
+.site-nav a:hover {
+  color: var(--red);
+  border-bottom-color: var(--red);
+}
+
+.site-nav a.active {
+  border-bottom-color: var(--red);
+}
+
+/* --- Footer navigation --- */
+
+.footer-nav {
+  margin-bottom: 1rem;
+  padding-bottom: .75rem;
+  border-bottom: 1px solid var(--warm-gray);
+}
+
+.footer-nav a {
+  font-family: var(--font-retro);
+  font-size: .7rem;
+  color: var(--warm-gray);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  text-decoration: none;
+  margin: 0 .4rem;
+  transition: color .15s;
+}
+
+.footer-nav a:hover {
+  color: var(--red);
+}
+
+/* --- Content pages --- */
+
+.content-page p {
+  margin-bottom: 1rem;
+  line-height: 1.7;
+}
+
+.content-page h2 {
+  margin-top: 2rem;
+  margin-bottom: .5rem;
+}
+
+.content-page h2:first-child {
+  margin-top: 0;
+}
+
+.content-page ul {
+  margin: .75rem 0 1rem 1.5rem;
+  line-height: 1.7;
+}
+
+.content-page li {
+  margin-bottom: .35rem;
+}
+
+/* --- Steps (How It Works) --- */
+
+.steps {
+  display: flex;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.step {
+  flex: 1;
+  border: 1px solid var(--navy);
+  padding: 1.25rem 1rem;
+  text-align: center;
+  position: relative;
+}
+
+.step-number {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border: 2px solid var(--navy);
+  border-radius: 50%;
+  line-height: 36px;
+  text-align: center;
+  font-family: var(--font-retro);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: .75rem;
+}
+
+.step h3 {
+  font-family: var(--font-retro);
+  font-size: .85rem;
+  color: var(--navy);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  margin-bottom: .5rem;
+}
+
+.step p {
+  font-size: .9rem;
+  color: var(--charcoal);
+  margin-bottom: 0;
+}
+
+/* --- Pricing table --- */
+
+.pricing-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.25rem 0;
+  font-size: .95rem;
+}
+
+.pricing-table th,
+.pricing-table td {
+  border: 1.5px solid var(--navy);
+  padding: .6rem .75rem;
+  text-align: left;
+}
+
+.pricing-table th {
+  font-family: var(--font-retro);
+  font-size: .8rem;
+  font-weight: 700;
+  color: var(--navy);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  background: var(--cream);
+}
+
+.pricing-table td {
+  background: var(--field-bg);
+}
+
+.pricing-table .price-cell {
+  font-family: var(--font-retro);
+  font-weight: 700;
+  color: var(--navy);
+}
+
+/* --- FAQ accordion --- */
+
+.faq-item {
+  border: 1px solid var(--navy);
+  margin-bottom: .75rem;
+}
+
+.faq-item summary {
+  font-family: var(--font-retro);
+  font-size: .9rem;
+  font-weight: 700;
+  color: var(--navy);
+  padding: .75rem 1rem;
+  cursor: pointer;
+  list-style: none;
+  position: relative;
+  padding-right: 2rem;
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item summary::after {
+  content: "+";
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.faq-item[open] summary::after {
+  content: "\2013";
+}
+
+.faq-item .faq-answer {
+  padding: 0 1rem 1rem;
+  font-size: .9rem;
+  line-height: 1.6;
+  color: var(--charcoal);
+}
+
+/* --- CTA button (link styled as button) --- */
+
+.cta-button {
+  display: inline-block;
+  margin-top: 1.5rem;
+  padding: .75rem 2rem;
+  background: var(--navy);
+  color: #fff;
+  border: 2px solid var(--navy);
+  font-family: var(--font-retro);
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background .15s, box-shadow .15s;
+}
+
+.cta-button:hover {
+  background: #243a64;
+  color: #fff;
+}
+
+.cta-button:active {
+  box-shadow: inset 0 2px 4px rgba(0,0,0,.3);
+}
+
+.cta-button:focus-visible {
+  outline: 2px solid var(--red);
+  outline-offset: 2px;
+}
+
 /* --- Responsive --- */
 
 @media (max-width: 480px) {
@@ -356,4 +595,7 @@ footer .footer-trust {
   .site-header .site-name { font-size: 1.3rem; }
   h1 { font-size: 1.3rem; }
   button[type="submit"] { width: 100%; }
+  .cta-button { width: 100%; text-align: center; }
+  .steps { flex-direction: column; }
+  .site-nav a { font-size: .6rem; margin: 0 .3rem; }
 }

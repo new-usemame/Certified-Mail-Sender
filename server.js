@@ -31,6 +31,11 @@ app.use('/', require('./routes/index'));
 app.use('/checkout', require('./routes/checkout'));
 app.use('/success', require('./routes/success'));
 app.use('/cancel', require('./routes/cancel'));
+app.use('/how-it-works', require('./routes/how-it-works'));
+app.use('/pricing', require('./routes/pricing'));
+app.use('/faq', require('./routes/faq'));
+app.use('/about', require('./routes/about'));
+app.use('/contact', require('./routes/contact'));
 
 if (process.env.ENABLE_STATUS_PAGE === 'true') {
   app.use('/status', require('./routes/status'));

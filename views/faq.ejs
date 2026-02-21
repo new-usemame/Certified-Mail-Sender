@@ -1,0 +1,169 @@
+<%- include('partials/header', { title, description, canonical, currentPath }) %>
+
+<main id="main" class="content-page">
+
+<h2>Frequently Asked Questions</h2>
+<p class="subtitle">Everything you need to know about USPS Certified Mail.</p>
+
+<details class="faq-item">
+  <summary>What is USPS Certified Mail?</summary>
+  <div class="faq-answer">
+    <p>USPS Certified Mail is a service that provides the sender with a mailing receipt and electronic verification that the letter was delivered or that delivery was attempted. It creates an official USPS record that the item was mailed and delivered, which can serve as legal proof of mailing.</p>
+  </div>
+</details>
+
+<details class="faq-item">
+  <summary>How long does certified mail take to deliver?</summary>
+  <div class="faq-answer">
+    <p>USPS Certified Mail typically takes 3 to 5 business days for delivery within the continental United States. Delivery times may vary depending on the origin and destination addresses, and during peak mailing periods.</p>
+  </div>
+</details>
+
+<details class="faq-item">
+  <summary>How much does certified mail cost?</summary>
+  <div class="faq-answer">
+    <p>Through our service, USPS Certified Mail with tracking costs $10.00. Adding an Electronic Return Receipt brings the total to $13.00. This price includes printing your letter, the envelope, certified postage, and tracking.</p>
+  </div>
+</details>
+
+<details class="faq-item">
+  <summary>What is a return receipt?</summary>
+  <div class="faq-answer">
+    <p>A return receipt (also called a "green card" for the physical version) provides proof of delivery. The Electronic Return Receipt gives you the name of the person who signed for the letter and the date it was delivered. It is useful when you need to prove that someone received your letter.</p>
+  </div>
+</details>
+
+<details class="faq-item">
+  <summary>How do I track my certified letter?</summary>
+  <div class="faq-answer">
+    <p>After your letter is processed, we email you a USPS tracking number. You can track your letter at <a href="https://tools.usps.com/go/TrackConfirmAction" target="_blank" rel="noopener">USPS.com tracking</a> using that number. Tracking updates are provided by USPS as the letter moves through their system.</p>
+  </div>
+</details>
+
+<details class="faq-item">
+  <summary>Is certified mail the same as registered mail?</summary>
+  <div class="faq-answer">
+    <p>No. Certified Mail provides proof of mailing and delivery. Registered Mail provides a chain of custody &mdash; it is signed for at every step of the delivery process and is typically used for items of high monetary value. Certified Mail is the standard choice for legal documents and important notices.</p>
+  </div>
+</details>
+
+<details class="faq-item">
+  <summary>Can I send certified mail online?</summary>
+  <div class="faq-answer">
+    <p>Yes. Our service lets you send USPS Certified Mail entirely online. You fill out a form with the sender and recipient addresses, type or upload your letter, and pay securely. We handle printing, adding certified postage, and mailing it through USPS.</p>
+  </div>
+</details>
+
+<details class="faq-item">
+  <summary>What can I send via certified mail?</summary>
+  <div class="faq-answer">
+    <p>Common uses include legal notices, demand letters, lease terminations, contract cancellations, IRS correspondence, insurance claims, cease and desist letters, and any document where you need proof that it was mailed and delivered.</p>
+  </div>
+</details>
+
+<details class="faq-item">
+  <summary>Do I need to go to the post office?</summary>
+  <div class="faq-answer">
+    <p>No. That is the whole point of our service. You fill out the form online, and we handle everything from printing to mailing. Your letter is sent as USPS Certified Mail without you ever visiting a post office.</p>
+  </div>
+</details>
+
+<details class="faq-item">
+  <summary>Is my payment information secure?</summary>
+  <div class="faq-answer">
+    <p>Yes. All payments are processed through Stripe, a PCI-compliant payment processor used by millions of businesses. We never see or store your credit card information.</p>
+  </div>
+</details>
+
+<a href="/" class="cta-button">Send Certified Mail Now</a>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is USPS Certified Mail?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "USPS Certified Mail is a service that provides the sender with a mailing receipt and electronic verification that the letter was delivered or that delivery was attempted. It creates an official USPS record that the item was mailed and delivered, which can serve as legal proof of mailing."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How long does certified mail take to deliver?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "USPS Certified Mail typically takes 3 to 5 business days for delivery within the continental United States. Delivery times may vary depending on the origin and destination addresses, and during peak mailing periods."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much does certified mail cost?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Through our service, USPS Certified Mail with tracking costs $10.00. Adding an Electronic Return Receipt brings the total to $13.00. This price includes printing your letter, the envelope, certified postage, and tracking."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is a return receipt?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A return receipt provides proof of delivery. The Electronic Return Receipt gives you the name of the person who signed for the letter and the date it was delivered. It is useful when you need to prove that someone received your letter."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I track my certified letter?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "After your letter is processed, we email you a USPS tracking number. You can track your letter at USPS.com using that number."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is certified mail the same as registered mail?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Certified Mail provides proof of mailing and delivery. Registered Mail provides a chain of custody and is typically used for items of high monetary value. Certified Mail is the standard choice for legal documents and important notices."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I send certified mail online?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Our service lets you send USPS Certified Mail entirely online. You fill out a form with the sender and recipient addresses, type or upload your letter, and pay securely. We handle printing, adding certified postage, and mailing it through USPS."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What can I send via certified mail?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Common uses include legal notices, demand letters, lease terminations, contract cancellations, IRS correspondence, insurance claims, cease and desist letters, and any document where you need proof that it was mailed and delivered."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need to go to the post office?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. You fill out the form online, and we handle everything from printing to mailing. Your letter is sent as USPS Certified Mail without you ever visiting a post office."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my payment information secure?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. All payments are processed through Stripe, a PCI-compliant payment processor used by millions of businesses. We never see or store your credit card information."
+      }
+    }
+  ]
+}
+</script>
+
+<%- include('partials/footer') %>

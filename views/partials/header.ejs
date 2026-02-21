@@ -49,7 +49,15 @@
 <a href="#main" class="skip-link">Skip to content</a>
 
 <header class="site-header">
-  <div class="postmark">USPS<br>Certified</div>
-  <h1 class="site-name">Certified Mail Sender</h1>
+  <a href="/" style="text-decoration:none;color:inherit"><div class="postmark">USPS<br>Certified</div>
+  <h1 class="site-name">Certified Mail Sender</h1></a>
   <p class="site-tagline">Official USPS Certified Mail, Sent Online</p>
+  <nav class="site-nav" aria-label="Main navigation">
+    <a href="/how-it-works"<%- (typeof currentPath !== 'undefined' && currentPath === '/how-it-works') ? ' class="active"' : '' %>>How It Works</a>
+    <a href="/pricing"<%- (typeof currentPath !== 'undefined' && currentPath === '/pricing') ? ' class="active"' : '' %>>Pricing</a>
+    <a href="/faq"<%- (typeof currentPath !== 'undefined' && currentPath === '/faq') ? ' class="active"' : '' %>>FAQ</a>
+    <a href="/about"<%- (typeof currentPath !== 'undefined' && currentPath === '/about') ? ' class="active"' : '' %>>About</a>
+    <a href="/contact"<%- (typeof currentPath !== 'undefined' && currentPath === '/contact') ? ' class="active"' : '' %>>Contact</a>
+    <a href="/"<%- (typeof currentPath !== 'undefined' && currentPath === '/') ? ' class="active"' : '' %>>Send Mail</a>
+  </nav>
 </header>

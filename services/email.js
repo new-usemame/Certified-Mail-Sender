@@ -71,4 +71,25 @@ async function sendFailureAlert({ orderId, error }) {
   });
 }
 
-module.exports = { sendCustomerEmail, sendOwnerEmail, sendFailureAlert };
+async function sendContactEmail({ name, email, subject, message }) {
+  await getResend().emails.send({
+    from: FROM_ADDRESS,
+    to: process.env.OWNER_EMAIL,
+    replyTo: email,
+    subject: `Contact Form: ${subject}`,
+    text: [
+      `New message from the contact form.`,
+      '',
+      `Name: ${name}`,
+      `Email: ${email}`,
+      `Subject: ${subject}`,
+      '',
+      `Message:`,
+      message,
+      '',
+      '— Certified Mail Sender Contact Form',
+    ].join('\n'),
+  });
+}
+
+module.exports = { sendCustomerEmail, sendOwnerEmail, sendFailureAlert, sendContactEmail };
