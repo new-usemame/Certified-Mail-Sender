@@ -6,10 +6,16 @@
   var pdfFile = null;
 
   var track = document.getElementById('wizardTrack');
+  var viewport = document.querySelector('.wizard-viewport');
   var slides = track.querySelectorAll('.wizard-slide');
   var progressSteps = document.querySelectorAll('.wizard-progress-step');
   var connectors = document.querySelectorAll('.wizard-progress-connector');
   var progressBar = document.querySelector('.wizard-progress');
+
+  function updateViewportHeight() {
+    var activeSlide = slides[currentStep];
+    viewport.style.height = activeSlide.scrollHeight + 'px';
+  }
 
   // --- Quill init ---
   quill = new Quill('#quillEditor', {
@@ -33,6 +39,7 @@
 
     function reveal() {
       group.classList.add('revealed');
+      setTimeout(updateViewportHeight, 360);
     }
 
     street.addEventListener('blur', function () {
@@ -282,6 +289,8 @@
       document.getElementById('wizardContent').style.display = '';
     }
 
+    updateViewportHeight();
+
     var wizard = document.getElementById('wizard');
     wizard.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
@@ -456,5 +465,8 @@
       document.getElementById('btnToReview').click();
     }
   });
+
+  updateViewportHeight();
+  window.addEventListener('resize', updateViewportHeight);
 
 })();

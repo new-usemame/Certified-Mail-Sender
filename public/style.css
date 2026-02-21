@@ -1691,6 +1691,7 @@ footer .footer-trust {
 .wizard-viewport {
   overflow: hidden;
   position: relative;
+  transition: height .4s cubic-bezier(.4, 0, .2, 1);
 }
 
 .wizard-track {
