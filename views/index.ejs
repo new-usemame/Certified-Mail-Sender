@@ -1,46 +1,47 @@
-<%- include('partials/header', { title: 'Send USPS Certified Mail Online | Certified Mail Sender' }) %>
+<%- include('partials/header') %>
 
 <main id="main">
 
 <h2>Send Certified Mail</h2>
-<p class="subtitle">Fill out the form below. We print, certify, and mail it through USPS.</p>
+<p class="subtitle">No account needed. Just fill out the form, pay, and we print, certify, and mail it through USPS.</p>
+<div class="no-signup-stamp">No Signup Required</div>
 
 <% if (typeof error !== 'undefined' && error) { %>
-  <div class="msg error"><%= error %></div>
+  <div class="msg error" role="alert"><%= error %></div>
 <% } %>
 
 <form action="/checkout" method="POST" enctype="multipart/form-data">
 
-  <section class="form-section">
-    <span class="section-label">Sender</span>
+  <fieldset class="form-section">
+    <legend class="section-label">Sender</legend>
 
     <label for="sender_name">Full Name</label>
-    <input type="text" id="sender_name" name="sender_name" required>
+    <input type="text" id="sender_name" name="sender_name" autocomplete="name" required>
 
     <label for="sender_street">Street Address</label>
-    <input type="text" id="sender_street" name="sender_street" required>
+    <input type="text" id="sender_street" name="sender_street" autocomplete="address-line1" required>
 
     <div class="row">
       <div>
         <label for="sender_city">City</label>
-        <input type="text" id="sender_city" name="sender_city" required>
+        <input type="text" id="sender_city" name="sender_city" autocomplete="address-level2" required>
       </div>
       <div>
         <label for="sender_state">State</label>
-        <input type="text" id="sender_state" name="sender_state" maxlength="2" required>
+        <input type="text" id="sender_state" name="sender_state" autocomplete="address-level1" maxlength="2" required>
       </div>
       <div>
         <label for="sender_zip">ZIP</label>
-        <input type="text" id="sender_zip" name="sender_zip" maxlength="10" required>
+        <input type="text" id="sender_zip" name="sender_zip" autocomplete="postal-code" maxlength="10" required>
       </div>
     </div>
 
     <label for="customer_email">Your Email (for tracking info)</label>
-    <input type="email" id="customer_email" name="customer_email" required>
-  </section>
+    <input type="email" id="customer_email" name="customer_email" autocomplete="email" required>
+  </fieldset>
 
-  <section class="form-section">
-    <span class="section-label">Recipient</span>
+  <fieldset class="form-section">
+    <legend class="section-label">Recipient</legend>
 
     <label for="recipient_name">Full Name</label>
     <input type="text" id="recipient_name" name="recipient_name" required>
@@ -62,10 +63,10 @@
         <input type="text" id="recipient_zip" name="recipient_zip" maxlength="10" required>
       </div>
     </div>
-  </section>
+  </fieldset>
 
-  <section class="form-section">
-    <span class="section-label">Letter Content</span>
+  <fieldset class="form-section">
+    <legend class="section-label">Letter Content</legend>
 
     <div class="radio-group">
       <div>
@@ -87,10 +88,10 @@
       <label for="letter_pdf">Upload PDF</label>
       <input type="file" id="letter_pdf" name="letter_pdf" accept="application/pdf">
     </div>
-  </section>
+  </fieldset>
 
-  <section class="form-section">
-    <span class="section-label">Options</span>
+  <fieldset class="form-section">
+    <legend class="section-label">Options</legend>
 
     <div class="checkbox-row">
       <input type="checkbox" id="return_receipt" name="return_receipt" value="1" onchange="updatePrice()">
@@ -98,9 +99,9 @@
     </div>
 
     <div class="price-box" id="price_display" aria-live="polite">Total: $10.00</div>
-  </section>
+  </fieldset>
 
-  <p class="trust-line">&#x1F512; Secure checkout via Stripe</p>
+  <p class="trust-line">&#x1F512; No account needed &middot; Secure checkout via Stripe</p>
   <button type="submit">Pay &amp; Send Certified Mail</button>
 
 </form>

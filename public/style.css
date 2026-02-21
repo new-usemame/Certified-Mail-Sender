@@ -5,7 +5,7 @@
   --red: #B33A3A;
   --cream: #FAFAF7;
   --charcoal: #2C2C2C;
-  --warm-gray: #8B8680;
+  --warm-gray: #706A65;
   --field-bg: #FFFFFF;
   --font-retro: "Courier Prime", "Courier New", Courier, monospace;
   --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
@@ -127,18 +127,14 @@ hr {
 .form-section {
   border: 1px solid var(--navy);
   padding: 1.25rem 1rem .75rem;
-  margin-bottom: 1.5rem;
-  position: relative;
+  margin: 0 0 1.5rem;
+  min-width: 0;
 }
 
 .form-section .section-label {
-  position: absolute;
-  top: -.65em;
-  left: .75rem;
-  background: var(--cream);
   padding: 0 .5rem;
   font-family: var(--font-retro);
-  font-size: .75rem;
+  font-size: 1rem;
   font-weight: 700;
   color: var(--navy);
   text-transform: uppercase;
@@ -200,10 +196,24 @@ input[type="file"] {
 
 /* --- Radio & checkbox groups --- */
 
+input[type="checkbox"],
+input[type="radio"] {
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  flex-shrink: 0;
+}
+
 .radio-group {
   display: flex;
   gap: 1.5rem;
   margin: .5rem 0;
+}
+.radio-group > div {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
 }
 .radio-group label {
   font-weight: normal;
@@ -211,6 +221,7 @@ input[type="file"] {
   text-transform: none;
   font-size: .9rem;
   letter-spacing: 0;
+  margin: 0;
 }
 
 .checkbox-row {
@@ -218,6 +229,7 @@ input[type="file"] {
   display: flex;
   align-items: center;
   gap: .5rem;
+  min-height: 44px;
 }
 .checkbox-row label {
   margin: 0;
@@ -243,12 +255,28 @@ input[type="file"] {
   transform: rotate(-2deg);
 }
 
+/* --- No-signup stamp --- */
+
+.no-signup-stamp {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  padding: .5rem 1.25rem;
+  border: 3px dashed var(--red);
+  font-family: var(--font-retro);
+  font-size: .85rem;
+  font-weight: 700;
+  color: var(--red);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  transform: rotate(-1.5deg);
+}
+
 /* --- Trust line --- */
 
 .trust-line {
   margin-top: 1rem;
   font-family: var(--font-retro);
-  font-size: .8rem;
+  font-size: .85rem;
   color: var(--warm-gray);
   letter-spacing: .02em;
 }
@@ -357,7 +385,7 @@ footer .footer-trust {
 
 .site-nav a {
   font-family: var(--font-retro);
-  font-size: .7rem;
+  font-size: .8rem;
   font-weight: 700;
   color: var(--navy);
   text-transform: uppercase;
@@ -388,7 +416,7 @@ footer .footer-trust {
 
 .footer-nav a {
   font-family: var(--font-retro);
-  font-size: .7rem;
+  font-size: .75rem;
   color: var(--warm-gray);
   text-transform: uppercase;
   letter-spacing: .04em;
@@ -888,7 +916,7 @@ footer .footer-trust {
   button[type="submit"] { width: 100%; }
   .cta-button { width: 100%; text-align: center; }
   .steps { flex-direction: column; }
-  .site-nav a { font-size: .6rem; margin: 0 .3rem; }
+  .site-nav a { font-size: .7rem; margin: 0 .3rem; }
   .order-details-grid { flex-direction: column; }
   .timeline { overflow-x: auto; justify-content: flex-start; padding-bottom: .5rem; }
   .timeline-label { font-size: .55rem; max-width: 55px; }
